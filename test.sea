@@ -1,0 +1,6 @@
+using <stdio.h>
+using <stdint.h>
+
+fn main() : i32 {
+    printf("Hello world");
+}

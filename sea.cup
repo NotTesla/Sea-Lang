@@ -1,0 +1,86 @@
+terminal ID, QSTRING, NUM;
+terminal I64, I32, I16, I8, U64, U32, U16, U8, F64, F32;
+terminal USIZE, SSIZE, WIDE_CHAR;
+terminal FN, STRUCT, STATIC, MUT, LET, RETURN, IF, ELSE, BEGIN, END;
+terminal LPAREN, RPAREN, ASSIGN, SEMICOLON, COMMA, DOT, GETPTR, STAR, COLON, DEREF;
+terminal PLUS, MINUS, DIVIDE, EQUALITY, NEQUALITY;
+terminal NOT, SHL, SHR, COMPLEMENT;
+terminal INCLUDE;
+
+nonterminal String program, includes, definitions, type;
+nonterminal String function, decl_params, _decl_params, decl_param;
+nonterminal String block, statement, _statement;
+
+program		::= includes:i definitions:d {:
+				RESULT = i + d;
+			:}
+			;
+
+type		::=	ID:i {:	RESULT = i + "";	:}
+			|	I64 {:	RESULT = "int64_t";	:}
+			|	I32 {:	RESULT = "int32_t";	:}
+			|	I16 {:	RESULT = "int16_t";	:}
+			|	I8 {:	RESULT = "int8_t";	:}
+			|	U64 {:	RESULT = "uint64_t";:}
+			|	U32 {:	RESULT = "uint32_t";:}
+			|	U16 {:	RESULT = "uint16_t";:}
+			|	U8 {:	RESULT = "uint8_t";	:}
+			|	F64 {:	RESULT = "double";	:}
+			|	F32 {:	RESULT = "float";	:}
+			;
+
+includes	::= INCLUDE:i includes:n {:
+				RESULT = "#include" + i + n;
+			:}
+			| {: RESULT = ""; :}
+			;
+
+definitions	::= function:f definitions:d {:
+				RESULT = f + d;
+			:}	
+			| {: RESULT = ""; :}
+			;
+
+function	::=	FN ID:i LPAREN decl_params:d RPAREN COLON type:t block:b {:
+				RESULT = t + " " + i + "(" + d + ") " + b;
+			:}
+			|	FN ID:i LPAREN decl_params:d RPAREN block:b {:
+				RESULT = "void " + i + "(" + d + ") " + b;
+			:}
+			;
+
+decl_params	::= decl_param:d _decl_params:p {:
+				RESULT = d + p;
+			:}
+			| {: RESULT = ""; :}
+			;
+
+_decl_params::= COMMA decl_param:d _decl_params:p {:
+				RESULT = "," + d + p;
+			:}
+			| {: RESULT = ""; :}
+			;
+
+decl_param	::= ID:i COLON type:t {:
+				RESULT = t + i;
+			:} 
+			;
+
+block		::= BEGIN statement:s _statement:t END {:
+				RESULT = "{\n" + s + "\n" + t + "}\n";
+			:}
+			;
+
+_statement	::= statement:s _statement:t {:
+				RESULT = s + "\n" + t;
+			:}
+			|	{: RESULT = ""; :}
+			;
+
+statement	::= ID:i LPAREN QSTRING:q RPAREN SEMICOLON {:
+				RESULT = i + "(" + q + ");";
+			:}
+			|	block:b {:
+				RESULT = b + "";
+			:}
+			;
