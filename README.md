@@ -1,12 +1,13 @@
-# Welcome to the Sea lang
-This language was produced for educational/recreational purposes, but feel free to use it if it suits you.
+# Welcome to the Sea language
+This language was produced mostly for educational purposes, but feel free to use it if you like
 
 ## Sea Mission
-- Provide a thin wrapper around c
+- Translate directly to C
+- Provide generic function/struct features
 - 
 
 ## Sea Setup Guide
-1. pull from the [repo]()
+1. clone the [repository](https://github.com/NotTesla/Sea-Lang)
 2. run ./compile.bat
 
 

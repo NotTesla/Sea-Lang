@@ -1,6 +1,6 @@
 terminal ID, QSTRING, NUM;
 terminal I64, I32, I16, I8, U64, U32, U16, U8, F64, F32;
-terminal USIZE, SSIZE, WIDE_CHAR;
+terminal USIZE, WIDE_CHAR;
 terminal FN, STRUCT, STATIC, MUT, LET, RETURN, IF, ELSE, BEGIN, END;
 terminal LPAREN, RPAREN, ASSIGN, SEMICOLON, COMMA, DOT, GETPTR, STAR, COLON, DEREF;
 terminal PLUS, MINUS, DIVIDE, EQUALITY, NEQUALITY;
@@ -10,6 +10,10 @@ terminal INCLUDE;
 nonterminal String program, includes, definitions, type;
 nonterminal String function, decl_params, _decl_params, decl_param;
 nonterminal String block, statement, _statement;
+nonterminal String var_decl, _var_decl, assign_stmt, expression;
+nonterminal String if_stmt, bool_expr;
+
+precedence left ELSE;
 
 program		::= includes:i definitions:d {:
 				RESULT = i + d;
@@ -82,5 +86,62 @@ statement	::= ID:i LPAREN QSTRING:q RPAREN SEMICOLON {:
 			:}
 			|	block:b {:
 				RESULT = b + "";
+			:}
+			|	if_stmt:i {:
+				RESULT = i + "";
+			:}
+			|	assign_stmt:a {:
+				RESULT = a + "";
+			:}
+			|	var_decl:v {:
+				RESULT = v + "";
+			:}
+			;
+
+assign_stmt	::=	ID:i ASSIGN expression:e SEMICOLON {:
+				RESULT = i + " = " + e + ";";
+			:}
+			;
+
+var_decl	::=	LET _var_decl:v {:
+				RESULT = "const " + v;
+			:}
+			|	MUT _var_decl:v {:
+				RESULT = v + "";
+			:}
+			|	MUT ID:i COLON type:t SEMICOLON {:
+				RESULT = t + " " + i + ";";
+			:}
+			;
+
+_var_decl	::=	ID:i COLON type:t ASSIGN expression:e SEMICOLON {:
+				RESULT = t + " " + i + " = " + e + ";";
+			:}
+			;
+
+expression	::= NUM:n {:
+				RESULT = n + "";
+			:}
+			|	ID:i {:
+				RESULT = i + "";
+			:}
+			;
+
+if_stmt		::= IF bool_expr:b block:l {:
+				RESULT = "if (" + b + ") " + l;
+			:}
+			|	IF bool_expr:b block:l ELSE block:o {:
+				RESULT = "if (" + b + ") " + l + "else " + o; 
+			:}
+			|	IF bool_expr:b block:l ELSE if_stmt:i {:
+				RESULT = "if (" + b + ") " + l + "else " + i; 
+			:}
+			;
+
+bool_expr	::= expression:e EQUALITY expression:x {:
+				RESULT = e + " == " + x;
+			:}
+			|	expression:e NEQUALITY expression:x {:
+				RESULT = e + " != " + x;
 			:}
 			;

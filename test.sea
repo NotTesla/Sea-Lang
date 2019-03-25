@@ -1,6 +1,16 @@
 using <stdio.h>
 using <stdint.h>
 
-fn main() : i32 {
-    printf("Hello world");
+fn main(): i32 {
+    let a:i32 = 5;
+    if a == 2 {
+        mut f: i32;
+    } else if a == 3 {
+        mut i: f64;
+    } else if a == 4 {
+        printf("foo");
+    } else {
+        printf("bar");
+    }
+    //printf("Hello world");
 }

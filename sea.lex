@@ -40,7 +40,6 @@ WHITESPACE = " "|\n|\r|\t
 <YYINITIAL>f32 { return new Symbol(SeaSymbol.F32); }
 
 <YYINITIAL>usize { return new Symbol(SeaSymbol.USIZE); }
-<YYINITIAL>ssize { return new Symbol(SeaSymbol.SSIZE); }
 
 <YYINITIAL>wchar { return new Symbol(SeaSymbol.WIDE_CHAR); }
 

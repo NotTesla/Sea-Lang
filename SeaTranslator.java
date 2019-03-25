@@ -1,6 +1,6 @@
 import java.io.*; 
 
-class SeaCompiler { 
+class SeaTranslator { 
     public static void main(String[] args) throws Exception { 
         File inputFile = new File ("test.sea"); 
         SeaParser parser= new SeaParser(new SeaScanner(new FileInputStream(inputFile))); 
