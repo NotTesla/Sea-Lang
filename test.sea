@@ -1,5 +1,5 @@
-using <stdio.h>
-using <stdint.h>
+imp <stdio.h>
+imp <stdint.h>
 
 fn main(): i32 {
     let a:i32 = 5;

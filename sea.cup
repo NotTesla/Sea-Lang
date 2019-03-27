@@ -7,7 +7,7 @@ terminal PLUS, MINUS, DIVIDE, EQUALITY, NEQUALITY;
 terminal NOT, SHL, SHR, COMPLEMENT;
 terminal INCLUDE;
 
-nonterminal String program, includes, definitions, type;
+nonterminal String program, includes, definitions, num_type, type;
 nonterminal String function, decl_params, _decl_params, decl_param;
 nonterminal String block, statement, _statement;
 nonterminal String var_decl, _var_decl, assign_stmt, expression;
@@ -20,8 +20,7 @@ program		::= includes:i definitions:d {:
 			:}
 			;
 
-type		::=	ID:i {:	RESULT = i + "";	:}
-			|	I64 {:	RESULT = "int64_t";	:}
+num_type	::=	I64 {:	RESULT = "int64_t";	:}
 			|	I32 {:	RESULT = "int32_t";	:}
 			|	I16 {:	RESULT = "int16_t";	:}
 			|	I8 {:	RESULT = "int8_t";	:}
@@ -31,6 +30,10 @@ type		::=	ID:i {:	RESULT = i + "";	:}
 			|	U8 {:	RESULT = "uint8_t";	:}
 			|	F64 {:	RESULT = "double";	:}
 			|	F32 {:	RESULT = "float";	:}
+			;
+
+type		::=	ID:i {:	RESULT = i + ""; :}
+			|	num_type:n {: RESULT = n + ""; :}
 			;
 
 includes	::= INCLUDE:i includes:n {:
@@ -117,9 +120,16 @@ var_decl	::=	LET _var_decl:v {:
 _var_decl	::=	ID:i COLON type:t ASSIGN expression:e SEMICOLON {:
 				RESULT = t + " " + i + " = " + e + ";";
 			:}
+			|	ID:i ASSIGN expression:e SEMICOLON {:
+				// TODO: this is going to be used in type inference later
+				RESULT = i + " = " + e + ";";
+			:}
 			;
 
 expression	::= NUM:n {:
+				RESULT = n + "";
+			:}
+			|	 NUM:n num_type:t {:
 				RESULT = n + "";
 			:}
 			|	ID:i {:

@@ -21,7 +21,7 @@ WHITESPACE = " "|\n|\r|\t
 <SINGLE_COMMENT>\r|\n { yybegin(YYINITIAL); }
 <SINGLE_COMMENT>. { }
 
-<YYINITIAL>"using" { yybegin(INCLUDE); }
+<YYINITIAL>"imp" { yybegin(INCLUDE); }
 <INCLUDE>[^\r\n]*(\r|\n) { yybegin(YYINITIAL); return new Symbol(SeaSymbol.INCLUDE, yytext()); }
 
 <YYINITIAL>\"[^\"]*\" { return new Symbol(SeaSymbol.QSTRING, yytext());}

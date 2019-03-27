@@ -3,17 +3,17 @@ This language was produced mostly for educational purposes, but feel free to use
 
 ## Sea Mission
 - Translate directly to C
+- Type inference
+- Replace pointers/null with optional refs
 - Provide generic function/struct features
-- 
 
 ## Sea Setup Guide
 1. clone the [repository](https://github.com/NotTesla/Sea-Lang)
 2. run ./compile.bat
 
-
 ## Sea Development
 Currently, Sea is compiled by a java program generated from [JavaCUP](http://www2.cs.tum.edu/projects/cup/)
 
 ## Sea Definition
-
+TODO: write language grammar in ebnf
 
