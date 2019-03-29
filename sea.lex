@@ -1,83 +1,80 @@
-import java_cup.runtime.*;
+_id [a-zA-Z_][a-zA-Z0-9_]*
+_num 0x[0-9A-Fa-f]+|0b[01]+|[0-9]*(\.[0-9]+)?
+_str \"[^\"]*\"
+
+%{
+#include <stdio.h>
+#include "symbol.h"
+
+void count();
+%}
+
+%x COMMENT
+
 %%
 
-%implements Scanner
-%type Symbol
-%function next_token
-%class SeaScanner
-%eofval{ return null;
-%eofval}
+<INITIAL>i64 { count(); return I64; }
+<INITIAL>i32 { count(); return I32; }
+<INITIAL>i16 { count(); return I32; }
+<INITIAL>i8 { count(); return I32; }
 
-WHITESPACE = " "|\n|\r|\t
+<INITIAL>u64 { count(); return U64; }
+<INITIAL>u32 { count(); return U32; }
+<INITIAL>u16 { count(); return U16; }
+<INITIAL>u8 { count(); return U8; }
 
-%state MULTI_COMMENT, SINGLE_COMMENT, INCLUDE
+<INITIAL>UPTR { count(); return UPTR; }
+<INITIAL>WCHR { count(); return WCHR; }
 
-%%
-<YYINITIAL>"/*" { yybegin(MULTI_COMMENT); }
-<MULTI_COMMENT>"*/" { yybegin(YYINITIAL); }
-<MULTI_COMMENT>.|\r|\n { }
+<INITIAL>f64 { count(); return F64; }
+<INITIAL>f32 { count(); return F32; }
 
-<YYINITIAL>"//" { yybegin(SINGLE_COMMENT); }
-<SINGLE_COMMENT>\r|\n { yybegin(YYINITIAL); }
-<SINGLE_COMMENT>. { }
+<INITIAL>inc { count(); return INC; }
+<INITIAL>cdef { count(); return CDEF; }
+<INITIAL>rdef { count(); return RDEF; }
 
-<YYINITIAL>"imp" { yybegin(INCLUDE); }
-<INCLUDE>[^\r\n]*(\r|\n) { yybegin(YYINITIAL); return new Symbol(SeaSymbol.INCLUDE, yytext()); }
+<INITIAL>fun { count(); return FUN; }
+<INITIAL>struct { count(); return STRUCT; }
+<INITIAL>mut { count(); return MUT; }
+<INITIAL>let { count(); return LET; }
+<INITIAL>ret { count(); return RET; }
+<INITIAL>if { count(); return IF; }
+<INITIAL>else { count(); return ELSE; }
+<INITIAL>for { count(); return FOR; }
+<INITIAL>do { count(); return DO; }
+<INITIAL>while { count(); return WHILE; }
 
-<YYINITIAL>\"[^\"]*\" { return new Symbol(SeaSymbol.QSTRING, yytext());}
+<INITIAL>"{" { count(); return OB; }
+<INITIAL>"}" { count(); return CB; }
+<INITIAL>"(" { count(); return OP; }
+<INITIAL>")" { count(); return CP; }
 
-<YYINITIAL>i64 { return new Symbol(SeaSymbol.I64); }
-<YYINITIAL>i32 { return new Symbol(SeaSymbol.I32); }
-<YYINITIAL>i16 { return new Symbol(SeaSymbol.I16); }
-<YYINITIAL>i8 { return new Symbol(SeaSymbol.I8); }
+<INITIAL>{_id} { count(); return ID; }
+<INITIAL>{_num} { count(); return NUM; }
+<INITIAL>{_str} { count(); return STRING; }
 
-<YYINITIAL>u64 { return new Symbol(SeaSymbol.U64); }
-<YYINITIAL>u32 { return new Symbol(SeaSymbol.U32); }
-<YYINITIAL>u16 { return new Symbol(SeaSymbol.U16); }
-<YYINITIAL>u8 { return new Symbol(SeaSymbol.U8); }
+<INITIAL>";" { count(); return SEMICOLON; }
+<INITIAL>"," { count(); return COMMA; }
+<INITIAL>"+" { count(); return ADD; }
+<INITIAL>"-" { count(); return MIN; }
+<INITIAL>"*" { count(); return MULT; }
+<INITIAL>"/" { count(); return DIV; }
+<INITIAL>"=" { count(); return ASSIGN; }
+<INITIAL>":" { count(); return COLON; }
+<INITIAL>"!" { count(); return DOT; }
+<INITIAL>"?" { count(); return QMARK; }
+<INITIAL>"~" { count(); return COMPLEMENT; }
+<INITIAL>"<<" { count(); return SHL; }
+<INITIAL>">>" { count(); return SHR; }
+<INITIAL>"==" { count(); return EQUALITY; }
+<INITIAL>"!=" { count(); return NEQUALITY; }
 
-<YYINITIAL>f64 { return new Symbol(SeaSymbol.F64); }
-<YYINITIAL>f32 { return new Symbol(SeaSymbol.F32); }
+<INITIAL>"+=" { count(); return ADD_EQ; }
+<INITIAL>"-=" { count(); return MIN_EQ; }
+<INITIAL>"*=" { count(); return MUL_EQ; }
+<INITIAL>"/=" { count(); return DIV_EQ; }
 
-<YYINITIAL>usize { return new Symbol(SeaSymbol.USIZE); }
+<INITIAL>"<<=" { count(); return SHL_EQ; }
+<INITIAL>">>=" { count(); return SHR_EQ; }
 
-<YYINITIAL>wchar { return new Symbol(SeaSymbol.WIDE_CHAR); }
-
-<YYINITIAL>fn { return new Symbol(SeaSymbol.FN); }
-<YYINITIAL>struct { return new Symbol(SeaSymbol.STRUCT); }
-<YYINITIAL>static { return new Symbol(SeaSymbol.STATIC); }
-<YYINITIAL>mut { return new Symbol(SeaSymbol.MUT); }
-<YYINITIAL>let { return new Symbol(SeaSymbol.LET); }
-<YYINITIAL>return { return new Symbol(SeaSymbol.RETURN); }
-<YYINITIAL>if { return new Symbol(SeaSymbol.IF); }
-<YYINITIAL>else { return new Symbol(SeaSymbol.ELSE); }
-<YYINITIAL>"{" { return new Symbol(SeaSymbol.BEGIN); }
-<YYINITIAL>"}" { return new Symbol(SeaSymbol.END); }
-
-<YYINITIAL>[a-zA-Z_][a-zA-Z0-9_]* { return new Symbol(SeaSymbol.ID, yytext());}
-<YYINITIAL>0x[0-9A-F]+ { return new Symbol(SeaSymbol.NUM, yytext()); }
-<YYINITIAL>0b[01]+ { return new Symbol(SeaSymbol.NUM, yytext()); }
-<YYINITIAL>[0-9]+(\.[0-9]+)? { return new Symbol(SeaSymbol.NUM, yytext()); }
-
-<YYINITIAL>"(" { return new Symbol(SeaSymbol.LPAREN); }
-<YYINITIAL>")" { return new Symbol(SeaSymbol.RPAREN); }
-<YYINITIAL>";" { return new Symbol(SeaSymbol.SEMICOLON); }
-<YYINITIAL>"," { return new Symbol(SeaSymbol.COMMA); }
-<YYINITIAL>"+" { return new Symbol(SeaSymbol.PLUS); }
-<YYINITIAL>"-" { return new Symbol(SeaSymbol.MINUS); }
-<YYINITIAL>"*" { return new Symbol(SeaSymbol.STAR); }
-<YYINITIAL>"/" { return new Symbol(SeaSymbol.DIVIDE); }
-<YYINITIAL>"=" { return new Symbol(SeaSymbol.ASSIGN); }
-<YYINITIAL>"&" { return new Symbol(SeaSymbol.GETPTR); }
-<YYINITIAL>":" { return new Symbol(SeaSymbol.COLON); }
-<YYINITIAL>"." { return new Symbol(SeaSymbol.DOT); }
-<YYINITIAL>"!" { return new Symbol(SeaSymbol.NOT); }
-<YYINITIAL>"~" { return new Symbol(SeaSymbol.COMPLEMENT); }
-<YYINITIAL>"->" { return new Symbol(SeaSymbol.DEREF); }
-<YYINITIAL>"<<" { return new Symbol(SeaSymbol.SHL); }
-<YYINITIAL>">>" { return new Symbol(SeaSymbol.SHR); }
-<YYINITIAL>"==" { return new Symbol(SeaSymbol.EQUALITY); }
-<YYINITIAL>"!=" { return new Symbol(SeaSymbol.NEQUALITY); }
-
-<YYINITIAL>{WHITESPACE} {  }
-<YYINITIAL>. { return new Symbol(SeaSymbol.error); }
+<INITIAL>. { count(); return ERROR; }
