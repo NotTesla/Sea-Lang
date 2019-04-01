@@ -1,16 +1,12 @@
-imp <stdio.h>
-imp <stdint.h>
+#include <stdio.h>
 
-fun main(): i32 {
-    let a:i32 = 5;
-    if a == 2 {
-        mut f: i32;
-    } else if a == 3 {
-        mut i: f64;
-    } else if a == 4 {
-        printf("foo");
-    } else {
-        printf("bar");
+int main() {
+
+    void test(const char* message) { 
+        printf("%s", message);
     }
-    //printf("Hello world");
+
+    test("Hello World");
+
+    return 0;
 }

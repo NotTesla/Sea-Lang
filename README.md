@@ -1,19 +1,20 @@
-# Welcome to the Sea language
-This language was produced mostly for educational purposes, but feel free to use it if you like
+# Welcome to Sea
+This language was produced mostly for educational purposes, but feel free to use it as you like
 
 ## Sea Mission
-- Translate directly to C
-- Type inference
-- Replace pointers/null with optional refs
-- Provide generic function/struct features
+Provide a higher-level set of operations onto the C language
 
 ## Sea Setup Guide
 1. clone the [repository](https://github.com/NotTesla/Sea-Lang)
-2. run ./compile.bat
+2. if you don't have lex/yacc, run `sudo apt-get install flex bison
+3. run `make`
 
 ## Sea Development
-Currently, Sea is compiled by a java program generated from [JavaCUP](http://www2.cs.tum.edu/projects/cup/)
+I am somewhat-actively developing sea, take a look at the roadmap if you would like to assist in development. Features don't need to be implemented in the order listed
 
-## Sea Definition
-TODO: write language grammar in ebnf
-
+## Sea Roadmap
+- (In Progress) Lambdas
+- Implement all features currently in C
+- Generics
+- Implement references/optionals
+- Type inference
