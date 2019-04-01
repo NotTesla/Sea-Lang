@@ -6,7 +6,7 @@ Provide a higher-level set of operations onto the C language
 
 ## Sea Setup Guide
 1. clone the [repository](https://github.com/NotTesla/Sea-Lang)
-2. if you don't have lex/yacc, run `sudo apt-get install flex bison
+2. if you don't have lex/yacc, run `sudo apt-get install flex bison`
 3. run `make`
 
 ## Sea Development

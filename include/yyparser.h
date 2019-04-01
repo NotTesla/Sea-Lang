@@ -46,30 +46,82 @@ extern int yydebug;
   enum yytokentype
   {
     IDENTIFIER = 258,
-    STR = 259,
-    INT = 260,
-    VOID = 261,
-    RETURN = 262
+    QSTRING = 259,
+    I8 = 260,
+    I16 = 261,
+    I32 = 262,
+    I64 = 263,
+    U8 = 264,
+    U16 = 265,
+    U32 = 266,
+    U64 = 267,
+    F32 = 268,
+    F64 = 269,
+    CSTR = 270,
+    BOOL = 271,
+    PSIZE = 272,
+    VOID = 273,
+    MUT = 274,
+    RET = 275,
+    IF = 276,
+    ELSE = 277,
+    VARGS = 278,
+    IS_EQ = 279,
+    NOT_EQ = 280,
+    LESS_EQ = 281,
+    MORE_EQ = 282,
+    ADD_EQ = 283,
+    SUB_EQ = 284,
+    MUL_EQ = 285,
+    DIV_EQ = 286,
+    SHL_EQ = 287,
+    SHR_EQ = 288
   };
 #endif
 /* Tokens.  */
 #define IDENTIFIER 258
-#define STR 259
-#define INT 260
-#define VOID 261
-#define RETURN 262
+#define QSTRING 259
+#define I8 260
+#define I16 261
+#define I32 262
+#define I64 263
+#define U8 264
+#define U16 265
+#define U32 266
+#define U64 267
+#define F32 268
+#define F64 269
+#define CSTR 270
+#define BOOL 271
+#define PSIZE 272
+#define VOID 273
+#define MUT 274
+#define RET 275
+#define IF 276
+#define ELSE 277
+#define VARGS 278
+#define IS_EQ 279
+#define NOT_EQ 280
+#define LESS_EQ 281
+#define MORE_EQ 282
+#define ADD_EQ 283
+#define SUB_EQ 284
+#define MUL_EQ 285
+#define DIV_EQ 286
+#define SHL_EQ 287
+#define SHR_EQ 288
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 5 "sea.y" /* yacc.c:1909  */
+#line 6 "sea.y" /* yacc.c:1909  */
 
-    int i;
-    char* s;
+    const char* s;
+    struct SeaNode* n;
 
-#line 73 "./include/yyparser.h" /* yacc.c:1909  */
+#line 125 "./include/yyparser.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

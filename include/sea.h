@@ -1,17 +1,24 @@
 #ifndef __SEA_H__
 #define __SEA_H__
 
-typedef struct sea_node_t {
-    int v;
+struct SeaTree {
+    const char** includes;
+    struct SeaNode* tree;
+};
 
-} SeaNode;
+struct SeaNode {
+    int id;
+    struct SeaNode* parent;
+    struct SeaNode** children;
+};
 
-SeaNode* sea_node_alloc();
+struct SeaNode* sea_node_alloc();
 
-//SeaNode* 
+void sea_tree_free(struct SeaTree*);
+
+void error_bad_token(const char *tok);
 
 int yylex(void);
-void error_bad_token(const char *tok);
 void yyerror(const char* msg);
 int yywrap(void);
 
