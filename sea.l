@@ -24,6 +24,9 @@ static inline char* copy_token(const char* yytext) {
     return strcpy((char*)malloc(sizeof(char) * strlen(yytext)), yytext);
 }
 
+// sets yylval to a token containing the scanned string
+#define STR_TOKEN (yylval.str = copy_token(yytext));
+
 %}
 
 %x COMMENT
@@ -34,27 +37,27 @@ static inline char* copy_token(const char* yytext) {
 
 <INITIAL>"#include"([^\n\r]*[\n\r]) { debug(yytext); }
 
-<INITIAL>"i8" { debug(yytext); return I8; }
-<INITIAL>"i16" { debug(yytext); return I16; }
-<INITIAL>"i32" { debug(yytext); return I32; }
-<INITIAL>"i64" { debug(yytext); return I64; }
+<INITIAL>"i8"   { debug(yytext); return I8; }
+<INITIAL>"i16"  { debug(yytext); return I16; }
+<INITIAL>"i32"  { debug(yytext); return I32; }
+<INITIAL>"i64"  { debug(yytext); return I64; }
 
-<INITIAL>"u8" { debug(yytext); return U8; }
-<INITIAL>"u16" { debug(yytext); return U16; }
-<INITIAL>"u32" { debug(yytext); return U32; }
-<INITIAL>"u64" { debug(yytext); return U64; }
+<INITIAL>"u8"   { debug(yytext); return U8; }
+<INITIAL>"u16"  { debug(yytext); return U16; }
+<INITIAL>"u32"  { debug(yytext); return U32; }
+<INITIAL>"u64"  { debug(yytext); return U64; }
 
-<INITIAL>"f32" { debug(yytext); return F32; }
-<INITIAL>"f64" { debug(yytext); return F64; }
+<INITIAL>"f32"  { debug(yytext); return F32; }
+<INITIAL>"f64"  { debug(yytext); return F64; }
 
-<INITIAL>"cstr" { debug(yytext); return CSTR; }
-<INITIAL>"bool" { debug(yytext); return BOOL; }
-<INITIAL>"psize" { debug(yytext); return PSIZE; }
-<INITIAL>"void" { debug(yytext); return VOID; }
+<INITIAL>"cstr"     { debug(yytext); return CSTR; }
+<INITIAL>"bool"     { debug(yytext); return BOOL; }
+<INITIAL>"psize"    { debug(yytext); return PSIZE; }
+<INITIAL>"void"     { debug(yytext); return VOID; }
 
-<INITIAL>"mut" { debug(yytext); return MUT; }
-<INITIAL>"ret" { debug(yytext); return RET; }
-<INITIAL>"if" { debug(yytext); return IF; }
+<INITIAL>"mut"  { debug(yytext); return MUT; }
+<INITIAL>"ret"  { debug(yytext); return RET; }
+<INITIAL>"if"   { debug(yytext); return IF; }
 <INITIAL>"else" { debug(yytext); return ELSE; }
 
 <INITIAL>"..." { debug(yytext); return VARGS; }
@@ -72,11 +75,12 @@ static inline char* copy_token(const char* yytext) {
 <INITIAL>"<<=" { debug(yytext); return SHL_EQ; }
 <INITIAL>">>=" { debug(yytext); return SHR_EQ; }
 
-<INITIAL>{id} { debug(yytext); yylval.s = copy_token(yytext); return IDENTIFIER; }
-<INITIAL>{str} { debug(yytext); yylval.s = copy_token(yytext); return QSTRING; }
+<INITIAL>{id}   { debug(yytext); STR_TOKEN; return IDENTIFIER; }
+<INITIAL>{num}  { debug(yytext); STR_TOKEN; return NUMBER; }
+<INITIAL>{str}  { debug(yytext); STR_TOKEN; return QSTRING; }
 
 <INITIAL>{single_char_punc} { debug(yytext); return *yytext; }
-<INITIAL>{whitespace} { debug(yytext); }
+<INITIAL>{whitespace}       { debug(yytext); }
 
 <INITIAL>. { error_bad_token(yytext); }
 
