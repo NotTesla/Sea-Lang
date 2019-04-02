@@ -1315,8 +1315,14 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-      
-#line 1320 "./src/yyparser.c" /* yacc.c:1646  */
+        case 21:
+#line 59 "sea.y" /* yacc.c:1646  */
+    { printf("|%s|\n", (yyvsp[-3].s)); }
+#line 1322 "./src/yyparser.c" /* yacc.c:1646  */
+    break;
+
+
+#line 1326 "./src/yyparser.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires

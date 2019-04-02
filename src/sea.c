@@ -6,8 +6,6 @@
 
 #include "sea.h"
 
-#define SNNULL ((struct SeaNode*)0)
-
 #define YYACCEPT 1
 #define YYABORT 0
 
@@ -20,12 +18,6 @@ int main(int argc, char** argv) {
     if (yyparse() == YYACCEPT) {
 
     }
-}
-
-struct SeaNode* sea_node_alloc() {
-    struct SeaNode* node = (struct SeaNode*)malloc(sizeof(struct SeaNode));
-    assert (node != SNNULL);
-    return node;
 }
 
 void error_bad_token(const char* tok) {

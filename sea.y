@@ -56,7 +56,7 @@ type
     ;
 
 func
-    : type IDENTIFIER '(' params ')'
+    : type IDENTIFIER '(' params ')' { printf("|%s|\n", $2); }
     ;
 
 func_def

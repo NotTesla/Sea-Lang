@@ -7,6 +7,7 @@ whitespace [ \t]|(\r?\n)
 
 %{
 #include <stdio.h>
+#include <string.h>
 #include "yyparser.h"
 #include "sea.h"
 
@@ -17,6 +18,10 @@ static inline void debug(const char* text) {
 #ifdef DEBUG_SCANNER
     printf("%s", text);
 #endif
+}
+
+static inline char* copy_token(const char* yytext) {
+    return strcpy((char*)malloc(sizeof(char) * strlen(yytext)), yytext);
 }
 
 %}
@@ -67,8 +72,8 @@ static inline void debug(const char* text) {
 <INITIAL>"<<=" { debug(yytext); return SHL_EQ; }
 <INITIAL>">>=" { debug(yytext); return SHR_EQ; }
 
-<INITIAL>{id} { debug(yytext); yylval.s = yytext; return IDENTIFIER; }
-<INITIAL>{str} { debug(yytext); yylval.s = yytext; return QSTRING; }
+<INITIAL>{id} { debug(yytext); yylval.s = copy_token(yytext); return IDENTIFIER; }
+<INITIAL>{str} { debug(yytext); yylval.s = copy_token(yytext); return QSTRING; }
 
 <INITIAL>{single_char_punc} { debug(yytext); return *yytext; }
 <INITIAL>{whitespace} { debug(yytext); }
