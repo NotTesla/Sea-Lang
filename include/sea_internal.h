@@ -27,10 +27,16 @@ typedef struct SeaNode {
     struct seavalue_t val;
 } SeaNode;
 
+
+typedef struct SN_Frame {
+    size_t child_index;
+    struct SeaNode* node;
+} SN_Frame;
+
 typedef struct SN_Stack {
     size_t index;
     size_t size;
-    struct SeaNode** data;
+    SN_Frame* data;
 } SN_Stack;
 
 #endif // __SEA_INTERNAL_H__

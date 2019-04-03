@@ -75,8 +75,12 @@ extern int yydebug;
     SUB_EQ = 285,
     MUL_EQ = 286,
     DIV_EQ = 287,
-    SHL_EQ = 288,
-    SHR_EQ = 289
+    MOD_EQ = 288,
+    SHL_EQ = 289,
+    SHR_EQ = 290,
+    AND_EQ = 291,
+    XOR_EQ = 292,
+    OR_EQ = 293
   };
 #endif
 /* Tokens.  */
@@ -110,8 +114,12 @@ extern int yydebug;
 #define SUB_EQ 285
 #define MUL_EQ 286
 #define DIV_EQ 287
-#define SHL_EQ 288
-#define SHR_EQ 289
+#define MOD_EQ 288
+#define SHL_EQ 289
+#define SHR_EQ 290
+#define AND_EQ 291
+#define XOR_EQ 292
+#define OR_EQ 293
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -124,7 +132,7 @@ union YYSTYPE
     char* str;
     struct SeaNode* node;
 
-#line 128 "./include/yyparser.h" /* yacc.c:1909  */
+#line 136 "./include/yyparser.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

@@ -19,8 +19,8 @@
 %token MUT RET IF ELSE VARGS
 
 %token IS_EQ NOT_EQ LESS_EQ MORE_EQ
-%token ADD_EQ SUB_EQ MUL_EQ DIV_EQ
-%token SHL_EQ SHR_EQ
+%token ADD_EQ SUB_EQ MUL_EQ DIV_EQ MOD_EQ
+%token SHL_EQ SHR_EQ AND_EQ XOR_EQ OR_EQ
 
 %type <node> global _global type
 %type <node> func func_def func_decl

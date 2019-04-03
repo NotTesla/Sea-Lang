@@ -5,5 +5,8 @@
 
 void sea_compile(struct SeaNode* program) {
     
+    // switch/case `program->type`
+
+
     sn_free(program);
 }

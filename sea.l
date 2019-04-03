@@ -2,7 +2,7 @@ id [a-zA-Z_][a-zA-Z0-9_]*
 num 0x[0-9A-Fa-f]+|0b[01]+|[0-9]*(\.[0-9]+(e(\+|\-)[0-9]+)?)?
 str \"[^\"]*\"
 single_line_comment \/\/[^\n\r]*
-single_char_punc [-+*/;,{}()\[\].<>]
+single_char_punc [-+*/%^|!&;,{}()\[\].<>]
 whitespace [ \t]|(\r?\n)
 
 %{
@@ -71,9 +71,13 @@ static inline char* copy_token(const char* yytext) {
 <INITIAL>"-=" { debug(yytext); return SUB_EQ; }
 <INITIAL>"*=" { debug(yytext); return MUL_EQ; }
 <INITIAL>"/=" { debug(yytext); return DIV_EQ; }
+<INITIAL>"%=" { debug(yytext); return MOD_EQ; }
 
 <INITIAL>"<<=" { debug(yytext); return SHL_EQ; }
 <INITIAL>">>=" { debug(yytext); return SHR_EQ; }
+<INITIAL>"&=" { debug(yytext); return AND_EQ; }
+<INITIAL>"|=" { debug(yytext); return OR_EQ; }
+<INITIAL>"^=" { debug(yytext); return XOR_EQ; }
 
 <INITIAL>{id}   { debug(yytext); COPY_STRTOK; return IDENTIFIER; }
 <INITIAL>{num}  { debug(yytext); COPY_STRTOK; return NUMBER; }
