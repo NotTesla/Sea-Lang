@@ -17,10 +17,10 @@ YACCO = yyparser
 
 CFLAGS = -Wall -Werror -Wextra -Wpedantic -Wno-unused-parameter -Wno-unused-function -I$(IDIR)
 
-_DEPS = $(YACCO).h sea_node.h sea_compiler.h sea_internal.h sea_stack.h sea.h
+_DEPS = $(YACCO).h sea_node.h sea_translator.h sea_internal.h sea_stack.h sea_debug.h sea.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJS = $(YACCO).o $(FLEXO).o sea_node.o sea_compiler.o sea_stack.o sea.o
+_OBJS = $(YACCO).o $(FLEXO).o sea_node.o sea_translator.o sea_stack.o sea.o
 OBJS = $(patsubst %,$(ODIR)/%,$(_OBJS))
 
 $(ODIR)/%.o: $(SDIR)/%.c $(DEPS)

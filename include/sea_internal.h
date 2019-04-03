@@ -21,22 +21,22 @@ struct seavalue_t {
     union seavalue_u data;
 };
 
-typedef struct SeaNode {
+struct SeaNode {
     enum NonTerminal type;
     // TODO: replace this with SeaValue for identifiers/qstrings
     struct seavalue_t val;
-} SeaNode;
+};
 
 
-typedef struct SN_Frame {
+struct SN_Frame {
     size_t child_index;
     struct SeaNode* node;
-} SN_Frame;
+};
 
-typedef struct SN_Stack {
+struct SN_Stack {
     size_t index;
     size_t size;
-    SN_Frame* data;
-} SN_Stack;
+    struct SN_Frame* data;
+};
 
 #endif // __SEA_INTERNAL_H__

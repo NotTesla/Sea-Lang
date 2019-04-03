@@ -52,6 +52,8 @@ static inline char* copy_token(const char* yytext) {
 
 <INITIAL>"cstr"     { debug(yytext); return CSTR; }
 <INITIAL>"bool"     { debug(yytext); return BOOL; }
+<INITIAL>"true"     { debug(yytext); return TRUE; }
+<INITIAL>"false"    { debug(yytext); return FALSE; }
 <INITIAL>"psize"    { debug(yytext); return PSIZE; }
 <INITIAL>"void"     { debug(yytext); return VOID; }
 

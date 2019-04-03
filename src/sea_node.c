@@ -6,18 +6,16 @@
 #include "sea_node.h"
 #include "sea_stack.h"
 #include "sea_internal.h"
+#include "sea_debug.h"
 
-#define DBG_SEA(MSG) "Sea D: " MSG "\n"
-#define ERR_SEA(MSG) "Sea E: " MSG "\n"
+struct SeaNode* EPSILON = (struct SeaNode*)0;
 
-SeaNode* EPSILON = (SeaNode*)0;
-
-SeaNode* sn_alloc(
+struct SeaNode* sn_alloc(
     enum NonTerminal nonterminal,
-    /* SeaNode* children */ ...) {
+    /* struct SeaNode* children */ ...) {
 
-    SeaNode* node
-        = (SeaNode*) malloc(sizeof(SeaNode));
+    struct SeaNode* node
+        = (struct SeaNode*) malloc(sizeof(struct SeaNode));
     assert (node != SNNULL);
 
     size_t size = 4, index = 0;
@@ -25,14 +23,14 @@ SeaNode* sn_alloc(
     node->type = nonterminal;
     node->val.type = SVL_CHILDREN;
     node->val.data.children
-        = (SeaNode**) malloc(sizeof(SeaNode*) * size);
-    assert(node->val.data.children != ((SeaNode**)0));
+        = (struct SeaNode**) malloc(sizeof(struct SeaNode*) * size);
+    assert(node->val.data.children != ((struct SeaNode**)0));
 
     va_list args;
     va_start(args, nonterminal);
 
-    SeaNode* child;
-    while ((child = va_arg(args, SeaNode*)) != SNNULL) {
+    struct SeaNode* child;
+    while ((child = va_arg(args, struct SeaNode*)) != SNNULL) {
         // don't add to the list if epsilon
         if (child == EPSILON) {
             continue;
@@ -42,8 +40,8 @@ SeaNode* sn_alloc(
         if (index >= size) {
             size *= 2;
             node->val.data.children
-                = (SeaNode**) realloc(node->val.data.children, sizeof(SeaNode*) * size);
-            assert (node->val.data.children != ((SeaNode**)0));
+                = (struct SeaNode**) realloc(node->val.data.children, sizeof(struct SeaNode*) * size);
+            assert (node->val.data.children != ((struct SeaNode**)0));
         }
     }
 
@@ -54,9 +52,9 @@ SeaNode* sn_alloc(
     return node;
 }
 
-SeaNode* sn_alloc_wtok(enum NonTerminal id, int tok) {
-    SeaNode* node
-        = (SeaNode*) malloc(sizeof(SeaNode));
+struct SeaNode* sn_alloc_wtok(enum NonTerminal id, int tok) {
+    struct SeaNode* node
+        = (struct SeaNode*) malloc(sizeof(struct SeaNode));
     assert (node != SNNULL);
 
     node->type = id;
@@ -66,9 +64,9 @@ SeaNode* sn_alloc_wtok(enum NonTerminal id, int tok) {
     return node;
 }
 
-SeaNode* sn_alloc_wstr(enum NonTerminal id, char* str) {
-    SeaNode* node
-        = (SeaNode*) malloc(sizeof(SeaNode));
+struct SeaNode* sn_alloc_wstr(enum NonTerminal id, char* str) {
+    struct SeaNode* node
+        = (struct SeaNode*) malloc(sizeof(struct SeaNode));
     assert (node != SNNULL);
 
     node->type = id;
@@ -78,22 +76,22 @@ SeaNode* sn_alloc_wstr(enum NonTerminal id, char* str) {
     return node;
 }
 
-SeaNode* sn_epsilon() {
+struct SeaNode* sn_epsilon() {
     // if epsilon isn't allocted, create one and return it
-    // note that epsilon isn't a valid SeaNode, it's just a pointer const
-    if (EPSILON == (SeaNode*)0) {
-        EPSILON = (SeaNode*) malloc(sizeof(char));
+    // note that epsilon isn't a valid struct SeaNode, it's just a pointer const
+    if (EPSILON == (struct SeaNode*)0) {
+        EPSILON = (struct SeaNode*) malloc(sizeof(char));
         assert (EPSILON != SNNULL);
     }
 
     return EPSILON;
 }
 
-void sn_free(SeaNode* node) {
+void sn_free(struct SeaNode* node) {
 
     // TODO: benchmark stack-based algorithm
-    SN_Stack* stack = sn_stack_alloc(10);
-    SN_Frame frame = (SN_Frame) {
+    struct SN_Stack* stack = sn_stack_alloc(10);
+    struct SN_Frame frame = (struct SN_Frame) {
         .child_index = 0,
         .node = node,
     };
@@ -103,7 +101,7 @@ void sn_free(SeaNode* node) {
         node = sn_top(stack)->node;
         switch(node->val.type) {
         case SVL_CHILDREN: {
-            SeaNode* next;
+            struct SeaNode* next;
             if ((next = node->val.data.children[sn_top(stack)->child_index++]) != SNNULL) {
                 frame.child_index = 0;
                 frame.node = next;
@@ -127,7 +125,7 @@ void sn_free(SeaNode* node) {
             break;
         }
         default:
-            fprintf(stderr, ERR_SEA("Node with value type [%d] has no `free` handler"), node->val.type);
+            fprintf(stderr, SEA_ERR("Node with value type [%d] has no `free` handler"), node->val.type);
         }
     }
 
@@ -135,7 +133,7 @@ void sn_free(SeaNode* node) {
 
     // TODO: benchmark recursive algorithm
     // if (node->val.type == SVL_CHILDREN) {
-    //     SeaNode* next;
+    //     struct SeaNode* next;
     //     size_t index = 0;
     //     while ((next = node->val.data.children[index++]) != SNNULL) {
     //         sn_free(next);

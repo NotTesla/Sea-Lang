@@ -15,7 +15,7 @@
 
 %token I8 I16 I32 I64 U8 U16 U32 U64 F32 F64
 
-%token CSTR BOOL PSIZE VOID
+%token CSTR BOOL TRUE FALSE PSIZE VOID
 %token MUT RET IF ELSE VARGS
 
 %token IS_EQ NOT_EQ LESS_EQ MORE_EQ
@@ -38,7 +38,7 @@
 %%
 
 program
-    : _global   { sea_compile($1); }
+    : _global   { sea_translate($1); }
     ;
 
 _global
