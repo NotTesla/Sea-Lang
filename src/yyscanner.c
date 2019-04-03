@@ -546,7 +546,7 @@ static inline char* copy_token(const char* yytext) {
 }
 
 // sets yylval to a token containing the scanned string
-#define STR_TOKEN (yylval.str = copy_token(yytext));
+#define COPY_STRTOK (yylval.str = copy_token(yytext));
 
 #line 552 "./src/yyscanner.c"
 
@@ -987,18 +987,18 @@ YY_RULE_SETUP
 case 32:
 YY_RULE_SETUP
 #line 78 "sea.l"
-{ debug(yytext); STR_TOKEN; return IDENTIFIER; }
+{ debug(yytext); COPY_STRTOK; return IDENTIFIER; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 79 "sea.l"
-{ debug(yytext); STR_TOKEN; return NUMBER; }
+{ debug(yytext); COPY_STRTOK; return NUMBER; }
 	YY_BREAK
 case 34:
 /* rule 34 can match eol */
 YY_RULE_SETUP
 #line 80 "sea.l"
-{ debug(yytext); STR_TOKEN; return QSTRING; }
+{ debug(yytext); COPY_STRTOK; return QSTRING; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP

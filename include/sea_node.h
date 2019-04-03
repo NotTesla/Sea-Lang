@@ -16,14 +16,11 @@ enum NonTerminal {
     SNT_PARAM,
     SNT_BLOCK,
     SNT_STATEMENTS,
-    SNT_STATEMENT,
     SNT_FUNC_CALL,
     SNT_CALL_PARAMS,
     SNT_RETURN_STMT,
     SNT_EXPRESSION,
 };
-
-struct SeaNode;
 
 // id: `NonTerminal`
 // ...: `SeaNode*`+ SNNULL

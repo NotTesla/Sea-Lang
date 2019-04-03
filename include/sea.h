@@ -2,6 +2,11 @@
 #define __SEA_H__
 
 #include "sea_node.h"
+#include "sea_compiler.h"
+#include <stdio.h>
+
+// This is needed for lex
+FILE *yyin;
 
 void error_bad_token(const char *tok);
 

@@ -22,7 +22,7 @@
 %token ADD_EQ SUB_EQ MUL_EQ DIV_EQ
 %token SHL_EQ SHR_EQ
 
-%type <node> program global type
+%type <node> global _global type
 %type <node> func func_def func_decl
 %type <node> params _params param
 %type <node> block _statement statement
@@ -38,7 +38,11 @@
 %%
 
 program
-    : global program    { $$ = sn_alloc(SNT_PROGRAM, $1, $2, SNNULL); }
+    : _global   { sea_compile($1); }
+    ;
+
+_global
+    : global _global    { $$ = sn_alloc(SNT_PROGRAM, $1, $2, SNNULL); }
     |                   { $$ = EPSILON; } 
     ;
 
@@ -103,11 +107,11 @@ _statement
     ;
 
 statement
-    : func_decl     { $$ = sn_alloc(SNT_STATEMENT, $1, SNNULL); }
-    | func_def      { $$ = sn_alloc(SNT_STATEMENT, $1, SNNULL); }
-    | func_call     { $$ = sn_alloc(SNT_STATEMENT, $1, SNNULL); }
-    | return_stmt   { $$ = sn_alloc(SNT_STATEMENT, $1, SNNULL); }
-    | block         { $$ = sn_alloc(SNT_STATEMENT, $1, SNNULL); }
+    : func_decl     { $$ = $1; }
+    | func_def      { $$ = $1; }
+    | func_call     { $$ = $1; }
+    | return_stmt   { $$ = $1; }
+    | block         { $$ = $1; }
     ;
 
 func_call

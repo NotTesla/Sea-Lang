@@ -1,38 +1,18 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <assert.h>
+
 #include "sea_node.h"
+#include "sea_internal.h"
 
-enum seavalue_e {
-    SVL_TOKEN,
-    SVL_STRING,
-    SVL_CHILDREN,
-    SVL_EPSILON,
-};
+SeaNode* EPSILON = (SeaNode*)0;
 
-union seavalue_u {
-    int token;
-    char* string;
-    struct SeaNode** children;
-};
-
-struct seavalue_t {
-    enum seavalue_e type;
-    union seavalue_u data;
-};
-
-struct SeaNode {
-    enum NonTerminal type;
-    // TODO: replace this with SeaValue for identifiers/qstrings
-    struct seavalue_t val;
-};
-
-struct SeaNode* sn_alloc(
+SeaNode* sn_alloc(
     enum NonTerminal nonterminal,
-    /* struct SeaNode* children */ ...) {
+    /* SeaNode* children */ ...) {
 
-    struct SeaNode* node
-        = (struct SeaNode*) malloc(sizeof(struct SeaNode));
+    SeaNode* node
+        = (SeaNode*) malloc(sizeof(SeaNode));
     assert (node != SNNULL);
 
     size_t size = 4, index = 0;
@@ -40,16 +20,16 @@ struct SeaNode* sn_alloc(
     node->type = nonterminal;
     node->val.type = SVL_CHILDREN;
     node->val.data.children
-        = (struct SeaNode**) malloc(sizeof(struct SeaNode*) * size);
-    assert(node->val.data.children != ((struct SeaNode**)0));
+        = (SeaNode**) malloc(sizeof(SeaNode*) * size);
+    assert(node->val.data.children != ((SeaNode**)0));
 
     va_list args;
     va_start(args, nonterminal);
 
-    struct SeaNode* child;
-    while ((child = va_arg(args, struct SeaNode*)) != SNNULL) {
+    SeaNode* child;
+    while ((child = va_arg(args, SeaNode*)) != SNNULL) {
         // don't add to the list if epsilon
-        if (child->val.type == SVL_EPSILON) {
+        if (child == EPSILON) {
             continue;
         }
 
@@ -57,24 +37,59 @@ struct SeaNode* sn_alloc(
         if (index >= size) {
             size *= 2;
             node->val.data.children
-                = (struct SeaNode**) realloc(node->val.data.children, sizeof(struct SeaNode*) * size);
-            assert (node->val.data.children != ((struct SeaNode**)0));
+                = (SeaNode**) realloc(node->val.data.children, sizeof(SeaNode*) * size);
+            assert (node->val.data.children != ((SeaNode**)0));
         }
     }
 
     node->val.data.children[index] = child;
 
     va_end(args);
+    
+    return node;
+}
+
+SeaNode* sn_alloc_wtok(enum NonTerminal id, int tok) {
+    SeaNode* node
+        = (SeaNode*) malloc(sizeof(SeaNode));
+    assert (node != SNNULL);
+
+    node->type = id;
+    node->val.type = SVL_TOKEN;
+    node->val.data.token = tok;
 
     return node;
 }
 
-void sn_free(struct SeaNode* node) {
+SeaNode* sn_alloc_wstr(enum NonTerminal id, char* str) {
+    SeaNode* node
+        = (SeaNode*) malloc(sizeof(SeaNode));
+    assert (node != SNNULL);
 
-    // TODO: use stack<struct SeaNode*> instead of recursion
+    node->type = id;
+    node->val.type = SVL_STRING;
+    node->val.data.string = str;
+
+    return node;
+}
+
+SeaNode* sn_epsilon() {
+    // if epsilon isn't allocted, create one and return it
+    // note that epsilon isn't a valid SeaNode, it's just a pointer const
+    if (EPSILON == (SeaNode*)0) {
+        EPSILON = (SeaNode*) malloc(sizeof(char));
+        assert (EPSILON != SNNULL);
+    }
+
+    return EPSILON;
+}
+
+void sn_free(SeaNode* node) {
+
+    // TODO: use stack<SeaNode*> instead of recursion
 
     if (node->val.type == SVL_CHILDREN) {
-        struct SeaNode* next;
+        SeaNode* next;
         size_t index = 0;
         while ((next = node->val.data.children[index]) != SNNULL) {
             sn_free(next);
@@ -86,16 +101,4 @@ void sn_free(struct SeaNode* node) {
     }
 
     free(node);
-}
-
-struct SeaNode* sn_alloc_wtok(enum NonTerminal id, int tok) {
-    return SNNULL;
-}
-
-struct SeaNode* sn_alloc_wstr(enum NonTerminal id, char* str) {
-    return SNNULL;
-}
-
-struct SeaNode* sn_epsilon() {
-    return SNNULL;
 }

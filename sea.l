@@ -25,7 +25,7 @@ static inline char* copy_token(const char* yytext) {
 }
 
 // sets yylval to a token containing the scanned string
-#define STR_TOKEN (yylval.str = copy_token(yytext));
+#define COPY_STRTOK (yylval.str = copy_token(yytext));
 
 %}
 
@@ -75,9 +75,9 @@ static inline char* copy_token(const char* yytext) {
 <INITIAL>"<<=" { debug(yytext); return SHL_EQ; }
 <INITIAL>">>=" { debug(yytext); return SHR_EQ; }
 
-<INITIAL>{id}   { debug(yytext); STR_TOKEN; return IDENTIFIER; }
-<INITIAL>{num}  { debug(yytext); STR_TOKEN; return NUMBER; }
-<INITIAL>{str}  { debug(yytext); STR_TOKEN; return QSTRING; }
+<INITIAL>{id}   { debug(yytext); COPY_STRTOK; return IDENTIFIER; }
+<INITIAL>{num}  { debug(yytext); COPY_STRTOK; return NUMBER; }
+<INITIAL>{str}  { debug(yytext); COPY_STRTOK; return QSTRING; }
 
 <INITIAL>{single_char_punc} { debug(yytext); return *yytext; }
 <INITIAL>{whitespace}       { debug(yytext); }
