@@ -2,6 +2,7 @@
 #define __SEA_INTERNAL_H__
 
 #include "sea_node.h"
+#include <stddef.h>
 
 enum seavalue_e {
     SVL_TOKEN,
@@ -25,5 +26,11 @@ typedef struct SeaNode {
     // TODO: replace this with SeaValue for identifiers/qstrings
     struct seavalue_t val;
 } SeaNode;
+
+typedef struct SN_Stack {
+    size_t index;
+    size_t size;
+    struct SeaNode** data;
+} SN_Stack;
 
 #endif // __SEA_INTERNAL_H__

@@ -6,8 +6,6 @@
 // SNT (sea non-terminals)
 enum NonTerminal {
     SNT_PROGRAM,
-    SNT_GLOBAL,
-    SNT_METHOD,
     SNT_TYPE,
     SNT_FUNC,
     SNT_FUNC_DEF,

@@ -5,4 +5,5 @@
 
 void sea_compile(struct SeaNode* program) {
     
+    sn_free(program);
 }

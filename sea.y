@@ -47,8 +47,8 @@ _global
     ;
 
 global
-    : func_def  { $$ = sn_alloc(SNT_GLOBAL, $1, SNNULL); }
-    | func_decl { $$ = sn_alloc(SNT_GLOBAL, $1, SNNULL); }
+    : func_def  { $$ = $1; }
+    | func_decl { $$ = $1; }
     ;
 
 type
@@ -70,7 +70,7 @@ type
     ;
 
 func
-    : type IDENTIFIER '(' params ')'    { $$ = sn_alloc(SNT_FUNC, $1, $2, $4, SNNULL); }
+    : type IDENTIFIER '(' params ')'    { $$ = sn_alloc(SNT_FUNC, $1, sn_alloc_wstr(SNT_TYPE, $2), $4, SNNULL); }
     ;
 
 func_def
@@ -93,7 +93,7 @@ _params
     ;
 
 param
-    : type IDENTIFIER   { $$ = sn_alloc(SNT_PARAM, $1, $2, SNNULL); }
+    : type IDENTIFIER   { $$ = sn_alloc(SNT_PARAM, $1, sn_alloc_wstr(SNT_TYPE, $2), SNNULL); }
     | type              { $$ = sn_alloc(SNT_PARAM, $1, SNNULL); }
     ;
 
@@ -115,7 +115,7 @@ statement
     ;
 
 func_call
-    : IDENTIFIER '(' call_params ')' ';'    { $$ = sn_alloc(SNT_FUNC_CALL, $1, $3, SNNULL); }
+    : IDENTIFIER '(' call_params ')' ';'    { $$ = sn_alloc(SNT_FUNC_CALL, sn_alloc_wstr(SNT_TYPE, $1), $3, SNNULL); }
     ;
 
 call_params
@@ -134,7 +134,7 @@ return_stmt
     ;
 
 expression
-    : IDENTIFIER    { $$ = sn_alloc(SNT_EXPRESSION, $1, SNNULL); }
+    : IDENTIFIER    { $$ = sn_alloc_wstr(SNT_EXPRESSION, $1); }
     | QSTRING       { $$ = sn_alloc(SNT_EXPRESSION, $1, SNNULL); }
     | func_call     { $$ = sn_alloc(SNT_EXPRESSION, $1, SNNULL); }
     ;

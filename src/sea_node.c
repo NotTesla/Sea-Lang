@@ -3,6 +3,7 @@
 #include <assert.h>
 
 #include "sea_node.h"
+#include "sea_stack.h"
 #include "sea_internal.h"
 
 SeaNode* EPSILON = (SeaNode*)0;
@@ -87,18 +88,40 @@ SeaNode* sn_epsilon() {
 void sn_free(SeaNode* node) {
 
     // TODO: use stack<SeaNode*> instead of recursion
+    // SN_Stack* stack = sn_stack_alloc(10);
+    // sn_push(stack, node);
+
+    // while (stack->index > 0) {
+    //     node = sn_top(stack);
+    //     printf("enter %d\n", node->type);
+    //     if (node->val.type == SVL_CHILDREN) {
+    //         SeaNode* next;
+    //         size_t index = 0;
+    //         while ((next = node->val.data.children[index++]) != SNNULL) {
+                // TODO: this algorithm will not work, `index` must be set on `sn_top(stack)`
+    //             sn_push(stack, next);
+    //             continue;
+    //         }
+    //     }
+    //     else if (node->val.type == SVL_STRING) {
+    //         free(node->val.data.string);
+    //     }
+    //     printf("free %d\n", node->type);
+    //     free(sn_pop(stack));
+    // }
 
     if (node->val.type == SVL_CHILDREN) {
         SeaNode* next;
         size_t index = 0;
-        while ((next = node->val.data.children[index]) != SNNULL) {
+        while ((next = node->val.data.children[index++]) != SNNULL) {
             sn_free(next);
         }
-
     }
     else if (node->val.type == SVL_STRING) {
         free(node->val.data.string);
     }
 
     free(node);
+
+    return;
 }

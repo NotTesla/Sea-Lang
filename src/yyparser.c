@@ -1340,13 +1340,13 @@ yyreduce:
 
   case 5:
 #line 50 "sea.y" /* yacc.c:1646  */
-    { (yyval.node) = sn_alloc(SNT_GLOBAL, (yyvsp[0].node), SNNULL); }
+    { (yyval.node) = (yyvsp[0].node); }
 #line 1345 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 6:
 #line 51 "sea.y" /* yacc.c:1646  */
-    { (yyval.node) = sn_alloc(SNT_GLOBAL, (yyvsp[0].node), SNNULL); }
+    { (yyval.node) = (yyvsp[0].node); }
 #line 1351 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
@@ -1442,7 +1442,7 @@ yyreduce:
 
   case 22:
 #line 73 "sea.y" /* yacc.c:1646  */
-    { (yyval.node) = sn_alloc(SNT_FUNC, (yyvsp[-4].node), (yyvsp[-3].str), (yyvsp[-1].node), SNNULL); }
+    { (yyval.node) = sn_alloc(SNT_FUNC, (yyvsp[-4].node), sn_alloc_wstr(SNT_TYPE, (yyvsp[-3].str)), (yyvsp[-1].node), SNNULL); }
 #line 1447 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
@@ -1490,7 +1490,7 @@ yyreduce:
 
   case 30:
 #line 96 "sea.y" /* yacc.c:1646  */
-    { (yyval.node) = sn_alloc(SNT_PARAM, (yyvsp[-1].node), (yyvsp[0].str), SNNULL); }
+    { (yyval.node) = sn_alloc(SNT_PARAM, (yyvsp[-1].node), sn_alloc_wstr(SNT_TYPE, (yyvsp[0].str)), SNNULL); }
 #line 1495 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
@@ -1550,7 +1550,7 @@ yyreduce:
 
   case 40:
 #line 118 "sea.y" /* yacc.c:1646  */
-    { (yyval.node) = sn_alloc(SNT_FUNC_CALL, (yyvsp[-4].str), (yyvsp[-2].node), SNNULL); }
+    { (yyval.node) = sn_alloc(SNT_FUNC_CALL, sn_alloc_wstr(SNT_TYPE, (yyvsp[-4].str)), (yyvsp[-2].node), SNNULL); }
 #line 1555 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
@@ -1592,7 +1592,7 @@ yyreduce:
 
   case 47:
 #line 137 "sea.y" /* yacc.c:1646  */
-    { (yyval.node) = sn_alloc(SNT_EXPRESSION, (yyvsp[0].str), SNNULL); }
+    { (yyval.node) = sn_alloc_wstr(SNT_EXPRESSION, (yyvsp[0].str)); }
 #line 1597 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 

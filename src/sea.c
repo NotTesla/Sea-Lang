@@ -30,16 +30,17 @@ int main(int argc, char** argv) {
     fclose(yyin);
 
     switch (parse) {
-        case YYACCEPT: {
+        case YYACCEPT:
             fprintf(stdout, DBG_SEA("Writing translation to [%s]"), outfile);
             out = fopen(outfile, "w");
             // TODO: get compiled program from sea_node.c
             fclose(out);
-        }
             break;
+
         case YYABORT:
             fprintf(stderr, ERR_SEA("Failed to parse input"));
             break;
+            
         case YYNOMEM:
             fprintf(stderr, ERR_SEA("Exhausted memory"));
             break;
