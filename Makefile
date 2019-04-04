@@ -15,7 +15,7 @@ YACCI = sea.y
 FLEXO = yyscanner
 YACCO = yyparser
 
-CFLAGS = -Wall -Werror -Wextra -Wpedantic -Wno-unused-parameter -Wno-unused-function -I$(IDIR)
+CFLAGS = -g -Wall -Werror -Wextra -Wpedantic -Wno-unused-parameter -Wno-unused-function -I$(IDIR)
 
 _DEPS = $(YACCO).h sea_node.h sea_translator.h sea_internal.h sea_stack.h sea_debug.h sea.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))

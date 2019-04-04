@@ -1,5 +1,7 @@
 id [a-zA-Z_][a-zA-Z0-9_]*
-num 0x[0-9A-Fa-f]+|0b[01]+|[0-9]*(\.[0-9]+(e(\+|\-)[0-9]+)?)?
+hex_num 0x[0-9A-Fa-f]+
+bin_num 0b[01]+
+dec_num [0-9]*(\.[0-9]+(e(\+|\-)[0-9]+)?)?
 str \"[^\"]*\"
 single_line_comment \/\/[^\n\r]*
 single_char_punc [-+*/%^|!&;,{}()\[\].<>]
@@ -21,11 +23,11 @@ static inline void debug(const char* text) {
 }
 
 static inline char* copy_token(const char* yytext) {
-    return strcpy((char*)malloc(sizeof(char) * strlen(yytext)), yytext);
+    return strcpy((char*)malloc(sizeof(char) * strlen(yytext) + 1), yytext);
 }
 
 // sets yylval to a token containing the scanned string
-#define COPY_STRTOK (yylval.str = copy_token(yytext));
+#define COPY_STRTOK(STR) (yylval.str = copy_token(STR));
 
 %}
 
@@ -34,8 +36,6 @@ static inline char* copy_token(const char* yytext) {
 %%
 
 <INITIAL>{single_line_comment} { debug(yytext); }
-
-<INITIAL>"#include"([^\n\r]*[\n\r]) { debug(yytext); }
 
 <INITIAL>"i8"   { debug(yytext); return I8; }
 <INITIAL>"i16"  { debug(yytext); return I16; }
@@ -81,9 +81,11 @@ static inline char* copy_token(const char* yytext) {
 <INITIAL>"|=" { debug(yytext); return OR_EQ; }
 <INITIAL>"^=" { debug(yytext); return XOR_EQ; }
 
-<INITIAL>{id}   { debug(yytext); COPY_STRTOK; return IDENTIFIER; }
-<INITIAL>{num}  { debug(yytext); COPY_STRTOK; return NUMBER; }
-<INITIAL>{str}  { debug(yytext); COPY_STRTOK; return QSTRING; }
+<INITIAL>{id}       { debug(yytext); COPY_STRTOK(yytext); return IDENTIFIER; }
+<INITIAL>{hex_num}  { debug(yytext); COPY_STRTOK(yytext); return NUMBER; }
+<INITIAL>{bin_num}  { debug(yytext); yylval.str = bin_to_hex(yytext); return NUMBER; }
+<INITIAL>{dec_num}  { debug(yytext); COPY_STRTOK(yytext); return NUMBER; }
+<INITIAL>{str}      { debug(yytext); COPY_STRTOK(yytext); return QSTRING; }
 
 <INITIAL>{single_char_punc} { debug(yytext); return *yytext; }
 <INITIAL>{whitespace}       { debug(yytext); }

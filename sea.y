@@ -135,7 +135,7 @@ return_stmt
 
 expression
     : IDENTIFIER    { $$ = sn_alloc_wstr(SNT_EXPRESSION, $1); }
-    | QSTRING       { $$ = sn_alloc(SNT_EXPRESSION, $1, SNNULL); }
+    | QSTRING       { $$ = sn_alloc_wstr(SNT_EXPRESSION, $1); }
     | func_call     { $$ = sn_alloc(SNT_EXPRESSION, $1, SNNULL); }
     ;
 

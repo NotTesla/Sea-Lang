@@ -1615,7 +1615,7 @@ yyreduce:
 
   case 48:
 #line 138 "sea.y" /* yacc.c:1646  */
-    { (yyval.node) = sn_alloc(SNT_EXPRESSION, (yyvsp[0].str), SNNULL); }
+    { (yyval.node) = sn_alloc_wstr(SNT_EXPRESSION, (yyvsp[0].str)); }
 #line 1620 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 

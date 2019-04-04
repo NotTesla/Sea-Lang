@@ -1,10 +1,9 @@
-//#include <stdio.h>
 
 i32 main() {
+    void test(cstr message) { 
+        printf("%s", message);
+    }
+
+    test("Hello World");
     ret;
 }
-//    void test(cstr message) { 
-//        printf("%s", message);
-//    }
-
-//    test("Hello World");

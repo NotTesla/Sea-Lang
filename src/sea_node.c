@@ -8,7 +8,7 @@
 #include "sea_internal.h"
 #include "sea_debug.h"
 
-struct SeaNode* EPSILON = (struct SeaNode*)0;
+struct SeaNode EPSILON;
 
 struct SeaNode* sn_alloc(
     enum NonTerminal nonterminal,
@@ -32,7 +32,7 @@ struct SeaNode* sn_alloc(
     struct SeaNode* child;
     while ((child = va_arg(args, struct SeaNode*)) != SNNULL) {
         // don't add to the list if epsilon
-        if (child == EPSILON) {
+        if (child == &EPSILON) {
             continue;
         }
 
@@ -77,14 +77,7 @@ struct SeaNode* sn_alloc_wstr(enum NonTerminal id, char* str) {
 }
 
 struct SeaNode* sn_epsilon() {
-    // if epsilon isn't allocted, create one and return it
-    // note that epsilon isn't a valid struct SeaNode, it's just a pointer const
-    if (EPSILON == (struct SeaNode*)0) {
-        EPSILON = (struct SeaNode*) malloc(sizeof(char));
-        assert (EPSILON != SNNULL);
-    }
-
-    return EPSILON;
+    return &EPSILON;
 }
 
 void sn_free(struct SeaNode* node) {
@@ -109,6 +102,7 @@ void sn_free(struct SeaNode* node) {
             }
             else {
                 // only free this node once all of it's children have been freed
+                free(node->val.data.children);
                 free(sn_pop(stack)->node);
             }
             continue;
@@ -125,6 +119,7 @@ void sn_free(struct SeaNode* node) {
             break;
         }
         default:
+            stack->index = 0;
             fprintf(stderr, SEA_ERR("Node with value type [%d] has no `free` handler"), node->val.type);
         }
     }
