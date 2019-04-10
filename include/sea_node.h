@@ -1,43 +1,22 @@
 #ifndef __SEA_NODE_H__
 #define __SEA_NODE_H__
 
-#define SNNULL ((struct SeaNode*)0)
+#include "sea_str.h"
 
-// SNT (sea non-terminals)
-enum NonTerminal {
-    SNT_PROGRAM,
-    SNT_TYPE,
-    SNT_FUNC,
-    SNT_FUNC_DEF,
-    SNT_FUNC_DECL,
-    SNT_PARAMS,
-    SNT_PARAM,
-    SNT_BLOCK,
-    SNT_STATEMENTS,
-    SNT_FUNC_CALL,
-    SNT_CALL_PARAMS,
-    SNT_RETURN_STMT,
-    SNT_EXPRESSION,
-};
+#define EPSILON ((struct SeaNode*)0)
 
 // id: `NonTerminal`
 // ...: `SeaNode*`+ SNNULL
 // allocates a node, stores a null terminated array of children
 // returns the allocated node
-// TODO: consider passing the len as an argument...... this could potentially
-// reduce calls to realloc
-struct SeaNode* sn_alloc(enum NonTerminal id, /* struct SeaNode* children */ ...);
+struct SeaNode* sea_nonterm(struct SeaStr str, struct SeaNode* next);
 
-// id: `NonTerminal`
-// tok: the token associated with this node
-struct SeaNode* sn_alloc_wtok(enum NonTerminal id, int tok);
+struct SeaNode* sea_term(struct SeaStr str);
 
-// id: `Terminal`
-// str: the string associated with this node
-struct SeaNode* sn_alloc_wstr(enum NonTerminal id, char* str);
+struct SeaNode* sea_cterm(const char* str);
 
-// don't alloc, just have a global epsilon struct
-struct SeaNode* sn_epsilon();
+// returns the epsilon seanode
+struct SeaNode* sea_epsilon();
 
 void sn_free(struct SeaNode* node);
 

@@ -2,6 +2,7 @@
 #include "sea_internal.h"
 #include "sea_debug.h"
 #include "sea_stack.h"
+#include "yyparser.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,11 +22,6 @@ const char* INCLUDE_STRS[] = {
     "#include <stdio.h>",
     "#include <stddef.h>",
     "#include <stdmath.h>",
-};
-
-struct LinkStr {
-    const char* str;
-    struct LinkStr* next;
 };
 
 struct Program {
@@ -95,5 +91,73 @@ void sea_write_translation(FILE* out) {
     }
 
     // write all function definitions
-    
+
+}
+
+char const*const fwidth_ints[] {
+    [I8]    = "int8_t",
+    [I16]   = "int16_t",
+    [I32]   = "int32_t",
+    [I64]   = "int64_t",
+    [U8]    = "uint8_t",
+    [U16]   = "uint16_t",
+    [U32]   = "uint32_t",
+    [U64]   = "uint64_t",
+};
+
+struct SeaStr sea_fint(int term) {
+    program.flags |= INC_STDINT;
+
+    return sea_cstr(fwidth_ints[term]);
+}
+
+#define ID_BUFFER_LEN 100
+
+struct SeaFrame {
+    char id[ID_BUFFER_LEN];
+    struct SeaFrame* prev;
+};
+
+struct SeaFrame base_frame
+    = {.id="",.prev = NULL};
+
+struct SeaFrame* stack = &base_frame;
+
+// call this when a block is detected
+// id: a label for the stack frame
+void sea_push_block(char* id) {
+    struct SeaFrame* prev = stack;
+    stack = (struct SeaFrame*)malloc(sizeof(struct SeaFrame));
+    stack->prev = prev;
+
+    struct SeaFrame* this = stack;
+    int len = 0;
+    while (this != NULL) {
+        len += snprintf(&stack->id[len], ID_BUFFER_LEN, "%s", this->id);
+        if (len >= ID_BUFFER_LEN) {
+            fprintf(stderr, SEA_ERR("Identifier longer than 100 characters %s"), this->id);
+            stack->id[ID_BUFFER_LEN - 1] = '\0';
+            break;
+        }
+
+        this = this->prev;
+    }
+}
+
+void sea_pop_block() {
+    struct SeaFrame* prev = stack->prev;
+    free(stack);
+    stack = prev;
+}
+
+void sea_vardecl(char* type, char* id) {
+
+}
+
+void sea_fndecl(char* type, char* id, char* params) {
+
+}
+
+char* sea_getfndecl(char* id) {
+
 }

@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
         case YYABORT:
             fprintf(stderr, SEA_ERR("Failed to parse input"));
             break;
-            
+
         case YYNOMEM:
             fprintf(stderr, SEA_ERR("Exhausted memory"));
             break;

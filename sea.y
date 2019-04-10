@@ -1,13 +1,13 @@
 %{
 #include "sea.h"
+#include "sea_node.h"
+#include "sea_internal.h"
 #include <stdio.h>
 
-#define EPSILON sn_epsilon()
+#define S(str) sea_cterm(str)
 %}
 
 %union {
-    int tok;
-    char* str;
     struct SeaNode* node;
 }
 
@@ -15,19 +15,20 @@
 
 %token I8 I16 I32 I64 U8 U16 U32 U64 F32 F64
 
-%token CSTR BOOL TRUE FALSE PSIZE VOID
-%token MUT RET IF ELSE VARGS
+%token WORD CSTR BOOL TRUE FALSE PSIZE VOID
+%token CAP MUT RET IF ELSE VARGS
 
 %token IS_EQ NOT_EQ LESS_EQ MORE_EQ
 %token ADD_EQ SUB_EQ MUL_EQ DIV_EQ MOD_EQ
 %token SHL_EQ SHR_EQ AND_EQ XOR_EQ OR_EQ
 
+
 %type <node> global _global type
-%type <node> func func_def func_decl
-%type <node> params _params param
-%type <node> block _statement statement
-%type <node> func_call call_params _call_params
 %type <node> return_stmt expression
+%type <node> func_call call_params _call_params
+%type <node> params _params param
+%type <node> func func_decl func_def
+%type <node> block _statement statement
 
 %left '+' '-'
 %left '*' '/'
@@ -42,67 +43,68 @@ program
     ;
 
 _global
-    : global _global    { $$ = sn_alloc(SNT_PROGRAM, $1, $2, SNNULL); }
+    : global _global    { $$ = sea_nonterm($1, $2, NULL); }
     |                   { $$ = EPSILON; } 
     ;
 
 global
     : func_def  { $$ = $1; }
-    | func_decl { $$ = $1; }
+    | func_decl { $$ = sea_nonterm($1); }
     ;
 
 type
-    : IDENTIFIER    { $$ = sn_alloc_wstr(SNT_TYPE, $1); }
-    | I8            { $$ = sn_alloc_wtok(SNT_TYPE, I8); }
-    | I16           { $$ = sn_alloc_wtok(SNT_TYPE, I16); }
-    | I32           { $$ = sn_alloc_wtok(SNT_TYPE, I32); }
-    | I64           { $$ = sn_alloc_wtok(SNT_TYPE, I64); }
-    | U8            { $$ = sn_alloc_wtok(SNT_TYPE, U8); }
-    | U16           { $$ = sn_alloc_wtok(SNT_TYPE, U16); }
-    | U32           { $$ = sn_alloc_wtok(SNT_TYPE, U32); }
-    | U64           { $$ = sn_alloc_wtok(SNT_TYPE, U64); }
-    | F32           { $$ = sn_alloc_wtok(SNT_TYPE, F32); }
-    | F64           { $$ = sn_alloc_wtok(SNT_TYPE, F64); }
-    | CSTR          { $$ = sn_alloc_wtok(SNT_TYPE, CSTR); }
-    | BOOL          { $$ = sn_alloc_wtok(SNT_TYPE, BOOL); }
-    | PSIZE         { $$ = sn_alloc_wtok(SNT_TYPE, PSIZE); }
-    | VOID          { $$ = sn_alloc_wtok(SNT_TYPE, VOID); }
+    : IDENTIFIER    { $$ = $1; }
+    | I8            { $$ = sea_fint(I8); }
+    | I16           { $$ = sea_fint(I16); }
+    | I32           { $$ = sea_fint(I32); }
+    | I64           { $$ = sea_fint(I64); }
+    | U8            { $$ = sea_fint(I8); }
+    | U16           { $$ = sea_fint(I16); }
+    | U32           { $$ = sea_fint(I32); }
+    | U64           { $$ = sea_fint(I64); }
+    | F32           { $$ = sea_cstr("float"); }
+    | F64           { $$ = sea_cstr("double"); }
+    | WORD          { $$ = sea_cstr("int"); }
+    | CSTR          { $$ = sea_cstr("const char*"); }
+    | BOOL          { $$ = sea_cstr("char"); }
+    | PSIZE         { $$ = sea_cstr("size_t"); }
+    | VOID          { $$ = sea_cstr("void"); }
     ;
 
 func
-    : type IDENTIFIER '(' params ')'    { $$ = sn_alloc(SNT_FUNC, $1, sn_alloc_wstr(SNT_TYPE, $2), $4, SNNULL); }
+    : type IDENTIFIER '(' params ')'    { $$ = sea_hstr($1, $2, S("("), $4, S(")"), NULL); }
     ;
 
 func_def
-    : func block    { $$ = sn_alloc(SNT_FUNC_DEF, $1, $2, SNNULL); }
+    : func block    { $$ = sea_nonterm($1, $2); }
     ;
 
 func_decl
-    : func ';'  { $$ = sn_alloc(SNT_FUNC_DECL, $1, SNNULL); }
+    : func ';'  { $$ = sea_hstr($1, S(";"), NULL); }
     ;
 
 params
-    : param _params { $$ = sn_alloc(SNT_PARAMS, $1, $2, SNNULL); }
+    : param _params { $$ = sea_hstr($1, $2, NULL); }
     |               { $$ = EPSILON; } 
     ;
 
 _params
-    : ',' param _params { $$ = sn_alloc(SNT_PARAMS, $2, $3, SNNULL); }
-    | VARGS             { /* TODO: */ $$ = sn_alloc_wtok(SNT_PARAMS, VARGS);}
+    : ',' param _params { $$ = sea_hstr(S(", "), $2, $3, NULL); }
+    | VARGS             { $$ = sea_cstr(S("..."));}
     |                   { $$ = EPSILON; }
     ;
 
 param
-    : type IDENTIFIER   { $$ = sn_alloc(SNT_PARAM, $1, sn_alloc_wstr(SNT_TYPE, $2), SNNULL); }
-    | type              { $$ = sn_alloc(SNT_PARAM, $1, SNNULL); }
+    : type IDENTIFIER   { $$ = sea_hstr($1, $2, NULL); }
+    | type              { $$ = $1; }
     ;
 
 block
-    : '{' _statement '}'       { $$ = sn_alloc(SNT_BLOCK, $2, SNNULL); }
+    : '{' _statement '}'       { $$ = sea_nonterm(sea_cstr("{"), $2); }
     ;
 
 _statement
-    : statement _statement  { $$ = sn_alloc(SNT_STATEMENTS, $1, $2, SNNULL); }
+    : statement _statement  { $$ = sea_nonterm($1, $2); }
     |                       { $$ = EPSILON; }
     ;
 
@@ -115,28 +117,28 @@ statement
     ;
 
 func_call
-    : IDENTIFIER '(' call_params ')' ';'    { $$ = sn_alloc(SNT_FUNC_CALL, sn_alloc_wstr(SNT_TYPE, $1), $3, SNNULL); }
+    : IDENTIFIER '(' call_params ')' ';'    { $$ = sea_hstr($1, S("("), $3, S(");"), NULL); }
     ;
 
 call_params
-    : expression _call_params   { $$ = sn_alloc(SNT_CALL_PARAMS, $1, $2, SNNULL); }
+    : expression _call_params   { $$ = sea_hstr($1, $2, NULL); }
     |                           { $$ = EPSILON; }
     ;
 
 _call_params
-    : ',' expression _call_params   { $$ = sn_alloc(SNT_CALL_PARAMS, $2, $3, SNNULL); }
+    : ',' expression _call_params   { $$ = sea_hstr(S(", "), $2, $3, NULL); }
     |                               { $$ = EPSILON; }
     ;
 
 return_stmt
-    : RET ';'               { $$ = sn_alloc(SNT_RETURN_STMT, SNNULL); }
-    | RET expression ';'    { $$ = sn_alloc(SNT_RETURN_STMT, $2, SNNULL); }
+    : RET ';'               { $$ = sea_cstr("return;"); }
+    | RET expression ';'    { $$ = sea_hstr(S("return "), $2, S(";"), NULL); }
     ;
 
 expression
-    : IDENTIFIER    { $$ = sn_alloc_wstr(SNT_EXPRESSION, $1); }
-    | QSTRING       { $$ = sn_alloc_wstr(SNT_EXPRESSION, $1); }
-    | func_call     { $$ = sn_alloc(SNT_EXPRESSION, $1, SNNULL); }
+    : IDENTIFIER    { $$ = $1; }
+    | QSTRING       { $$ = $1; }
+    | func_call     { $$ = $1; }
     ;
 
 %%

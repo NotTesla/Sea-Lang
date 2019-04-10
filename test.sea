@@ -1,7 +1,7 @@
 
 i32 main() {
-    void test(cstr message) { 
-        printf("%s", message);
+    void test(cstr msg) { 
+        printf("%s", msg);
     }
 
     test("Hello World");

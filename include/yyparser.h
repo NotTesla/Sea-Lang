@@ -58,31 +58,33 @@ extern int yydebug;
     U64 = 268,
     F32 = 269,
     F64 = 270,
-    CSTR = 271,
-    BOOL = 272,
-    TRUE = 273,
-    FALSE = 274,
-    PSIZE = 275,
-    VOID = 276,
-    MUT = 277,
-    RET = 278,
-    IF = 279,
-    ELSE = 280,
-    VARGS = 281,
-    IS_EQ = 282,
-    NOT_EQ = 283,
-    LESS_EQ = 284,
-    MORE_EQ = 285,
-    ADD_EQ = 286,
-    SUB_EQ = 287,
-    MUL_EQ = 288,
-    DIV_EQ = 289,
-    MOD_EQ = 290,
-    SHL_EQ = 291,
-    SHR_EQ = 292,
-    AND_EQ = 293,
-    XOR_EQ = 294,
-    OR_EQ = 295
+    WORD = 271,
+    CSTR = 272,
+    BOOL = 273,
+    TRUE = 274,
+    FALSE = 275,
+    PSIZE = 276,
+    VOID = 277,
+    CAP = 278,
+    MUT = 279,
+    RET = 280,
+    IF = 281,
+    ELSE = 282,
+    VARGS = 283,
+    IS_EQ = 284,
+    NOT_EQ = 285,
+    LESS_EQ = 286,
+    MORE_EQ = 287,
+    ADD_EQ = 288,
+    SUB_EQ = 289,
+    MUL_EQ = 290,
+    DIV_EQ = 291,
+    MOD_EQ = 292,
+    SHL_EQ = 293,
+    SHR_EQ = 294,
+    AND_EQ = 295,
+    XOR_EQ = 296,
+    OR_EQ = 297
   };
 #endif
 /* Tokens.  */
@@ -99,44 +101,44 @@ extern int yydebug;
 #define U64 268
 #define F32 269
 #define F64 270
-#define CSTR 271
-#define BOOL 272
-#define TRUE 273
-#define FALSE 274
-#define PSIZE 275
-#define VOID 276
-#define MUT 277
-#define RET 278
-#define IF 279
-#define ELSE 280
-#define VARGS 281
-#define IS_EQ 282
-#define NOT_EQ 283
-#define LESS_EQ 284
-#define MORE_EQ 285
-#define ADD_EQ 286
-#define SUB_EQ 287
-#define MUL_EQ 288
-#define DIV_EQ 289
-#define MOD_EQ 290
-#define SHL_EQ 291
-#define SHR_EQ 292
-#define AND_EQ 293
-#define XOR_EQ 294
-#define OR_EQ 295
+#define WORD 271
+#define CSTR 272
+#define BOOL 273
+#define TRUE 274
+#define FALSE 275
+#define PSIZE 276
+#define VOID 277
+#define CAP 278
+#define MUT 279
+#define RET 280
+#define IF 281
+#define ELSE 282
+#define VARGS 283
+#define IS_EQ 284
+#define NOT_EQ 285
+#define LESS_EQ 286
+#define MORE_EQ 287
+#define ADD_EQ 288
+#define SUB_EQ 289
+#define MUL_EQ 290
+#define DIV_EQ 291
+#define MOD_EQ 292
+#define SHL_EQ 293
+#define SHR_EQ 294
+#define AND_EQ 295
+#define XOR_EQ 296
+#define OR_EQ 297
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 8 "sea.y" /* yacc.c:1909  */
+#line 10 "sea.y" /* yacc.c:1909  */
 
-    int tok;
-    char* str;
     struct SeaNode* node;
 
-#line 140 "./include/yyparser.h" /* yacc.c:1909  */
+#line 142 "./include/yyparser.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

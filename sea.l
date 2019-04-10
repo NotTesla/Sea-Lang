@@ -11,6 +11,7 @@ whitespace [ \t]|(\r?\n)
 #include <stdio.h>
 #include <string.h>
 #include "yyparser.h"
+#include "sea_str.h"
 #include "sea.h"
 
 // define `DEBUG_SCANNER` to print each token
@@ -23,7 +24,7 @@ static inline void debug(const char* text) {
 }
 
 static inline char* copy_token(const char* yytext) {
-    return strcpy((char*)malloc(sizeof(char) * strlen(yytext) + 1), yytext);
+    return sea_tstr(strcpy((char*)malloc(sizeof(char) * strlen(yytext) + 1), yytext));
 }
 
 // sets yylval to a token containing the scanned string
@@ -50,6 +51,7 @@ static inline char* copy_token(const char* yytext) {
 <INITIAL>"f32"  { debug(yytext); return F32; }
 <INITIAL>"f64"  { debug(yytext); return F64; }
 
+<INITIAL>"word"     { debug(yytext); return WORD; }
 <INITIAL>"cstr"     { debug(yytext); return CSTR; }
 <INITIAL>"bool"     { debug(yytext); return BOOL; }
 <INITIAL>"true"     { debug(yytext); return TRUE; }
@@ -57,6 +59,7 @@ static inline char* copy_token(const char* yytext) {
 <INITIAL>"psize"    { debug(yytext); return PSIZE; }
 <INITIAL>"void"     { debug(yytext); return VOID; }
 
+<INITIAL>"cap"  { debug(yytext); return CAP; }
 <INITIAL>"mut"  { debug(yytext); return MUT; }
 <INITIAL>"ret"  { debug(yytext); return RET; }
 <INITIAL>"if"   { debug(yytext); return IF; }
