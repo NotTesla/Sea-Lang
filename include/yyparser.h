@@ -39,6 +39,13 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 8 "sea.y" /* yacc.c:1909  */
+
+
+#include "sea_str.h"
+
+#line 49 "./include/yyparser.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -48,97 +55,99 @@ extern int yydebug;
     IDENTIFIER = 258,
     QSTRING = 259,
     NUMBER = 260,
-    I8 = 261,
-    I16 = 262,
-    I32 = 263,
-    I64 = 264,
-    U8 = 265,
-    U16 = 266,
-    U32 = 267,
-    U64 = 268,
-    F32 = 269,
-    F64 = 270,
-    WORD = 271,
-    CSTR = 272,
-    BOOL = 273,
-    TRUE = 274,
-    FALSE = 275,
-    PSIZE = 276,
-    VOID = 277,
-    CAP = 278,
-    MUT = 279,
-    RET = 280,
-    IF = 281,
-    ELSE = 282,
-    VARGS = 283,
-    IS_EQ = 284,
-    NOT_EQ = 285,
-    LESS_EQ = 286,
-    MORE_EQ = 287,
-    ADD_EQ = 288,
-    SUB_EQ = 289,
-    MUL_EQ = 290,
-    DIV_EQ = 291,
-    MOD_EQ = 292,
-    SHL_EQ = 293,
-    SHR_EQ = 294,
-    AND_EQ = 295,
-    XOR_EQ = 296,
-    OR_EQ = 297
+    CINCLUDE = 261,
+    I8 = 262,
+    I16 = 263,
+    I32 = 264,
+    I64 = 265,
+    U8 = 266,
+    U16 = 267,
+    U32 = 268,
+    U64 = 269,
+    F32 = 270,
+    F64 = 271,
+    WORD = 272,
+    CSTR = 273,
+    BOOL = 274,
+    TRUE = 275,
+    FALSE = 276,
+    PSIZE = 277,
+    VOID = 278,
+    CAP = 279,
+    MUT = 280,
+    RET = 281,
+    IF = 282,
+    ELSE = 283,
+    VARGS = 284,
+    IS_EQ = 285,
+    NOT_EQ = 286,
+    LESS_EQ = 287,
+    MORE_EQ = 288,
+    ADD_EQ = 289,
+    SUB_EQ = 290,
+    MUL_EQ = 291,
+    DIV_EQ = 292,
+    MOD_EQ = 293,
+    SHL_EQ = 294,
+    SHR_EQ = 295,
+    AND_EQ = 296,
+    XOR_EQ = 297,
+    OR_EQ = 298
   };
 #endif
 /* Tokens.  */
 #define IDENTIFIER 258
 #define QSTRING 259
 #define NUMBER 260
-#define I8 261
-#define I16 262
-#define I32 263
-#define I64 264
-#define U8 265
-#define U16 266
-#define U32 267
-#define U64 268
-#define F32 269
-#define F64 270
-#define WORD 271
-#define CSTR 272
-#define BOOL 273
-#define TRUE 274
-#define FALSE 275
-#define PSIZE 276
-#define VOID 277
-#define CAP 278
-#define MUT 279
-#define RET 280
-#define IF 281
-#define ELSE 282
-#define VARGS 283
-#define IS_EQ 284
-#define NOT_EQ 285
-#define LESS_EQ 286
-#define MORE_EQ 287
-#define ADD_EQ 288
-#define SUB_EQ 289
-#define MUL_EQ 290
-#define DIV_EQ 291
-#define MOD_EQ 292
-#define SHL_EQ 293
-#define SHR_EQ 294
-#define AND_EQ 295
-#define XOR_EQ 296
-#define OR_EQ 297
+#define CINCLUDE 261
+#define I8 262
+#define I16 263
+#define I32 264
+#define I64 265
+#define U8 266
+#define U16 267
+#define U32 268
+#define U64 269
+#define F32 270
+#define F64 271
+#define WORD 272
+#define CSTR 273
+#define BOOL 274
+#define TRUE 275
+#define FALSE 276
+#define PSIZE 277
+#define VOID 278
+#define CAP 279
+#define MUT 280
+#define RET 281
+#define IF 282
+#define ELSE 283
+#define VARGS 284
+#define IS_EQ 285
+#define NOT_EQ 286
+#define LESS_EQ 287
+#define MORE_EQ 288
+#define ADD_EQ 289
+#define SUB_EQ 290
+#define MUL_EQ 291
+#define DIV_EQ 292
+#define MOD_EQ 293
+#define SHL_EQ 294
+#define SHR_EQ 295
+#define AND_EQ 296
+#define XOR_EQ 297
+#define OR_EQ 298
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 10 "sea.y" /* yacc.c:1909  */
+#line 13 "sea.y" /* yacc.c:1909  */
 
-    struct SeaNode* node;
+    struct SeaStr str;
 
-#line 142 "./include/yyparser.h" /* yacc.c:1909  */
+#line 151 "./include/yyparser.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

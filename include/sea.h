@@ -1,8 +1,6 @@
 #ifndef __SEA_H__
 #define __SEA_H__
 
-#include "sea_node.h"
-#include "sea_translator.h"
 #include <stdio.h>
 
 // This is needed for lex

@@ -1,17 +1,20 @@
 %{
 #include "sea.h"
-#include "sea_node.h"
-#include "sea_internal.h"
-#include <stdio.h>
+#include "sea_translator.h"
 
-#define S(str) sea_cterm(str)
+#define EPSILON (sea_cstr(""))
 %}
 
-%union {
-    struct SeaNode* node;
+%code requires {
+
+#include "sea_str.h"
 }
 
-%token <str> IDENTIFIER QSTRING NUMBER
+%union {
+    struct SeaStr str;
+}
+
+%token <str> IDENTIFIER QSTRING NUMBER CINCLUDE
 
 %token I8 I16 I32 I64 U8 U16 U32 U64 F32 F64
 
@@ -22,13 +25,12 @@
 %token ADD_EQ SUB_EQ MUL_EQ DIV_EQ MOD_EQ
 %token SHL_EQ SHR_EQ AND_EQ XOR_EQ OR_EQ
 
-
-%type <node> global _global type
-%type <node> return_stmt expression
-%type <node> func_call call_params _call_params
-%type <node> params _params param
-%type <node> func func_decl func_def
-%type <node> block _statement statement
+%type <str> global _global type include
+%type <str> return_stmt expression
+%type <str> func_call call_params _call_params
+%type <str> params _params param
+%type <str> func func_decl func_def
+%type <str> block _statement statement
 
 %left '+' '-'
 %left '*' '/'
@@ -43,14 +45,18 @@ program
     ;
 
 _global
-    : global _global    { $$ = sea_nonterm($1, $2, NULL); }
-    |                   { $$ = EPSILON; } 
+    : global _global    { $$ = sea_hstr($1.s, $2.s, NULL); }
+    |                   { $$ = EPSILON; }
     ;
 
 global
     : func_def  { $$ = $1; }
-    | func_decl { $$ = sea_nonterm($1); }
+    | func_decl { $$ = $1; }
+    | include   { $$ = $1; }
     ;
+
+include
+    : CINCLUDE   { $$ = $1; }
 
 type
     : IDENTIFIER    { $$ = $1; }
@@ -72,39 +78,39 @@ type
     ;
 
 func
-    : type IDENTIFIER '(' params ')'    { $$ = sea_hstr($1, $2, S("("), $4, S(")"), NULL); }
+    : type IDENTIFIER '(' params ')'    { $$ = sea_hstr($1.s, " ", $2.s, "(", $4.s, ")", NULL); }
     ;
 
 func_def
-    : func block    { $$ = sea_nonterm($1, $2); }
+    : func block    { $$ = sea_hstr($1.s, $2.s, NULL); }
     ;
 
 func_decl
-    : func ';'  { $$ = sea_hstr($1, S(";"), NULL); }
+    : func ';'  { $$ = sea_hstr($1.s, ";", NULL); }
     ;
 
 params
-    : param _params { $$ = sea_hstr($1, $2, NULL); }
+    : param _params { $$ = sea_hstr($1.s, $2.s, NULL); }
     |               { $$ = EPSILON; } 
     ;
 
 _params
-    : ',' param _params { $$ = sea_hstr(S(", "), $2, $3, NULL); }
-    | VARGS             { $$ = sea_cstr(S("..."));}
+    : ',' param _params { $$ = sea_hstr(", ", $2.s, $3.s, NULL); }
+    | VARGS             { $$ = sea_cstr("...");}
     |                   { $$ = EPSILON; }
     ;
 
 param
-    : type IDENTIFIER   { $$ = sea_hstr($1, $2, NULL); }
+    : type IDENTIFIER   { $$ = sea_hstr($1.s, " ", $2.s, NULL); }
     | type              { $$ = $1; }
     ;
 
 block
-    : '{' _statement '}'       { $$ = sea_nonterm(sea_cstr("{"), $2); }
+    : '{' _statement '}'       { $$ = sea_hstr("{\n", $2.s, "}\n", NULL); }
     ;
 
 _statement
-    : statement _statement  { $$ = sea_nonterm($1, $2); }
+    : statement _statement  { $$ = sea_hstr($1.s, "\n", $2.s, NULL); }
     |                       { $$ = EPSILON; }
     ;
 
@@ -117,26 +123,27 @@ statement
     ;
 
 func_call
-    : IDENTIFIER '(' call_params ')' ';'    { $$ = sea_hstr($1, S("("), $3, S(");"), NULL); }
+    : IDENTIFIER '(' call_params ')' ';'    { $$ = sea_hstr($1.s, "(", $3.s, ");", NULL); }
     ;
 
 call_params
-    : expression _call_params   { $$ = sea_hstr($1, $2, NULL); }
+    : expression _call_params   { $$ = sea_hstr($1.s, $2.s, NULL); }
     |                           { $$ = EPSILON; }
     ;
 
 _call_params
-    : ',' expression _call_params   { $$ = sea_hstr(S(", "), $2, $3, NULL); }
+    : ',' expression _call_params   { $$ = sea_hstr(", ", $2.s, $3.s, NULL); }
     |                               { $$ = EPSILON; }
     ;
 
 return_stmt
     : RET ';'               { $$ = sea_cstr("return;"); }
-    | RET expression ';'    { $$ = sea_hstr(S("return "), $2, S(";"), NULL); }
+    | RET expression ';'    { $$ = sea_hstr("return ", $2.s, ";", NULL); }
     ;
 
 expression
     : IDENTIFIER    { $$ = $1; }
+    | NUMBER        { $$ = $1; }
     | QSTRING       { $$ = $1; }
     | func_call     { $$ = $1; }
     ;

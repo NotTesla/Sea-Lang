@@ -2,21 +2,21 @@
 #define __SEA_STR_H__
 
 enum SeaStrMem {
-    HEAP,
-    CONST,
-    TOKEN,
+    STR_HEAP,
+    STR_TOKEN,
+    STR_CONST,
 };
 
 struct SeaStr {
     enum SeaStrMem alloc;
-    char* str;
+    char* s;
 };
 
-struct SeaStr sea_hstr(struct SeaNode* node, ...);
+struct SeaStr sea_hstr(char* node, ...);
 
-struct SeaStr sea_cstr(char* buff);
+struct SeaStr sea_tstr(char* str);
 
-struct SeaStr sea_tstr(char* buff);
+struct SeaStr sea_cstr(const char* str);
 
 void sea_str_free(struct SeaStr* str, ...);
 

@@ -4,15 +4,16 @@ bin_num 0b[01]+
 dec_num [0-9]*(\.[0-9]+(e(\+|\-)[0-9]+)?)?
 str \"[^\"]*\"
 single_line_comment \/\/[^\n\r]*
-single_char_punc [-+*/%^|!&;,{}()\[\].<>]
+single_char_punc [-+*/%^|!&;,()\[\].<>]
 whitespace [ \t]|(\r?\n)
 
 %{
 #include <stdio.h>
 #include <string.h>
 #include "yyparser.h"
-#include "sea_str.h"
 #include "sea.h"
+#include "sea_str.h"
+#include "sea_scope.h"
 
 // define `DEBUG_SCANNER` to print each token
 // as it's scanned from the input file
@@ -23,7 +24,7 @@ static inline void debug(const char* text) {
 #endif
 }
 
-static inline char* copy_token(const char* yytext) {
+static inline struct SeaStr copy_token(const char* yytext) {
     return sea_tstr(strcpy((char*)malloc(sizeof(char) * strlen(yytext) + 1), yytext));
 }
 
@@ -38,6 +39,7 @@ static inline char* copy_token(const char* yytext) {
 
 <INITIAL>{single_line_comment} { debug(yytext); }
 
+<INITIAL>"#include <".+".h>"\r?\n { debug(yytext); COPY_STRTOK(yytext); return CINCLUDE; }
 <INITIAL>"i8"   { debug(yytext); return I8; }
 <INITIAL>"i16"  { debug(yytext); return I16; }
 <INITIAL>"i32"  { debug(yytext); return I32; }
@@ -86,9 +88,12 @@ static inline char* copy_token(const char* yytext) {
 
 <INITIAL>{id}       { debug(yytext); COPY_STRTOK(yytext); return IDENTIFIER; }
 <INITIAL>{hex_num}  { debug(yytext); COPY_STRTOK(yytext); return NUMBER; }
-<INITIAL>{bin_num}  { debug(yytext); yylval.str = bin_to_hex(yytext); return NUMBER; }
+<INITIAL>{bin_num}  { debug(yytext); yylval.str = sea_tstr(bin_to_hex(yytext)); return NUMBER; }
 <INITIAL>{dec_num}  { debug(yytext); COPY_STRTOK(yytext); return NUMBER; }
 <INITIAL>{str}      { debug(yytext); COPY_STRTOK(yytext); return QSTRING; }
+
+<INITIAL>"{"    { debug(yytext); sea_push_block(); return *yytext; }
+<INITIAL>"}"    { debug(yytext); sea_pop_block(); return *yytext; }
 
 <INITIAL>{single_char_punc} { debug(yytext); return *yytext; }
 <INITIAL>{whitespace}       { debug(yytext); }

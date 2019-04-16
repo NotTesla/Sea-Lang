@@ -5,6 +5,7 @@
 
 #include "yyparser.h"
 #include "sea_debug.h"
+#include "sea_translator.h"
 
 #include "sea.h"
 
@@ -19,7 +20,7 @@ int main(int argc, char** argv) {
 
     yyin = fopen(infile, "r");
     if (yyin == NULL) {
-        fprintf(stderr, SEA_ERR("Could not open file [%s]"), infile);
+        fprintf(stderr, SEA_ERR("Could not open file (%s)"), infile);
     }
 
     int parse = yyparse();
@@ -28,7 +29,7 @@ int main(int argc, char** argv) {
 
     switch (parse) {
         case YYACCEPT: {
-            fprintf(stdout, SEA_DBG("Writing translation to [%s]"), outfile);
+            fprintf(stdout, SEA_DBG("Writing translation to (%s)"), outfile);
             FILE* out = fopen(outfile, "w");
             sea_write_translation(out);
             fclose(out);
@@ -45,7 +46,7 @@ int main(int argc, char** argv) {
 }
 
 void error_bad_token(const char* tok) {
-    fprintf(stderr, SEA_ERR("Unrecognized input token [%s]"), tok);
+    fprintf(stderr, SEA_ERR("Unrecognized input token (%s)"), tok);
 }
 
 void yyerror(const char* msg) {
@@ -64,53 +65,23 @@ char to_hex(int v) {
     }
 }
 
-// TODO: finish this
-char* bin_to_hex(const char* bin_str) {
-    const int bin_len = strlen(bin_str) - 2;
-    const int len = (bin_len - 1) / 4;
-    const int hex_len = len + len % 4;
+char* bin_to_hex(char const* bin_str) {
+    unsigned long long val = 0;
 
-    char* hex_str = (char*) calloc(hex_len + 3, sizeof(char));
-    char* hex_char = hex_str;
+    bin_str += 2;
+    do {
+        val <<= 1;
 
-    *(hex_char++) = '0';
-    *(hex_char++) = 'x';
-
-    bin_str += 1;
-
-    int hex = 0, count = 0, index = hex_len - 1;
-    for (int i = 0; i < bin_len; ++i) {
-        hex |= (bin_str[bin_len - i] == '1') ? (1 << count) : 0x0;
-        ++count;
-
-        if (count == 4) {
-            hex_char[index--] = to_hex(hex);
-            count = hex = 0;
+        if (*bin_str == '1') {
+            val |= 1;
         }
-    }
+    } while (*++bin_str != '\0');
 
-    if (count > 0) {
-        hex_char[index] = to_hex(hex);
-    }
+    const int len = 100;
+    char* hex_str = (char*)malloc(len * sizeof(char));
 
-    // int v = 0;
-    // int count = 0;
-    // int i;
-    // int cindex = hex_len-1;
-    // for (i = hex_len - 1; i > 1; --i) {
-    //     v |= (bin_str[i] == '1') ? (1 << count) : 0x0;
-    //     ++count;
-
-    //     if (count == 4) {
-    //         hex_str[cIndex--] = to_hex(v);
-
-    //         count = v = 0;
-    //     }
-    // }
-
-    // if (count != 0) {
-    //     hex_str[(i - 2) / 4 + 2] = to_hex(v);
-    // }
-
+    //sprintf(hex_str, "0x%llX", val);
+    hex_str[0] = '0';
+    hex_str[1] = '\0';
     return hex_str;
 }

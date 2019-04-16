@@ -1,9 +1,12 @@
+#include <stdio.h>
 
 i32 main() {
-    void test(cstr msg) { 
-        printf("%s", msg);
+
+    void test(cstr msg) {
+        printf("%s\n", msg);
     }
 
+
     test("Hello World");
-    ret;
+    ret 0b1101;
 }
