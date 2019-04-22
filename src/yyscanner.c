@@ -568,15 +568,18 @@ static inline void debug(const char* text) {
 }
 
 static inline struct SeaStr copy_token(const char* yytext) {
-    return sea_tstr(strcpy((char*)malloc(sizeof(char) * strlen(yytext) + 1), yytext));
+    char* str = (char*)malloc(sizeof(char) * (strlen(yytext) + 2));
+    str[0] = CHEAP;
+    strcpy(&str[1], yytext);
+    return sea_tstr(str);
 }
 
 // sets yylval to a token containing the scanned string
 #define COPY_STRTOK(STR) (yylval.str = copy_token(STR));
 
-#line 578 "./src/yyscanner.c"
+#line 581 "./src/yyscanner.c"
 
-#line 580 "./src/yyscanner.c"
+#line 583 "./src/yyscanner.c"
 
 #define INITIAL 0
 #define COMMENT 1
@@ -794,10 +797,10 @@ YY_DECL
 		}
 
 	{
-#line 38 "sea.l"
+#line 41 "sea.l"
 
 
-#line 801 "./src/yyscanner.c"
+#line 804 "./src/yyscanner.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -856,258 +859,258 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 40 "sea.l"
+#line 43 "sea.l"
 { debug(yytext); }
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 42 "sea.l"
+#line 45 "sea.l"
 { debug(yytext); COPY_STRTOK(yytext); return CINCLUDE; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 43 "sea.l"
+#line 46 "sea.l"
 { debug(yytext); return I8; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 44 "sea.l"
+#line 47 "sea.l"
 { debug(yytext); return I16; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 45 "sea.l"
+#line 48 "sea.l"
 { debug(yytext); return I32; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 46 "sea.l"
+#line 49 "sea.l"
 { debug(yytext); return I64; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 48 "sea.l"
+#line 51 "sea.l"
 { debug(yytext); return U8; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 49 "sea.l"
+#line 52 "sea.l"
 { debug(yytext); return U16; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 50 "sea.l"
+#line 53 "sea.l"
 { debug(yytext); return U32; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 51 "sea.l"
+#line 54 "sea.l"
 { debug(yytext); return U64; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 53 "sea.l"
+#line 56 "sea.l"
 { debug(yytext); return F32; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 54 "sea.l"
+#line 57 "sea.l"
 { debug(yytext); return F64; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 56 "sea.l"
+#line 59 "sea.l"
 { debug(yytext); return WORD; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 57 "sea.l"
+#line 60 "sea.l"
 { debug(yytext); return CSTR; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 58 "sea.l"
+#line 61 "sea.l"
 { debug(yytext); return BOOL; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 59 "sea.l"
+#line 62 "sea.l"
 { debug(yytext); return TRUE; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 60 "sea.l"
+#line 63 "sea.l"
 { debug(yytext); return FALSE; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 61 "sea.l"
+#line 64 "sea.l"
 { debug(yytext); return PSIZE; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 62 "sea.l"
+#line 65 "sea.l"
 { debug(yytext); return VOID; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 64 "sea.l"
+#line 67 "sea.l"
 { debug(yytext); return CAP; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 65 "sea.l"
+#line 68 "sea.l"
 { debug(yytext); return MUT; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 66 "sea.l"
+#line 69 "sea.l"
 { debug(yytext); return RET; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 67 "sea.l"
+#line 70 "sea.l"
 { debug(yytext); return IF; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 68 "sea.l"
+#line 71 "sea.l"
 { debug(yytext); return ELSE; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 70 "sea.l"
+#line 73 "sea.l"
 { debug(yytext); return VARGS; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 72 "sea.l"
+#line 75 "sea.l"
 { debug(yytext); return IS_EQ; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 73 "sea.l"
+#line 76 "sea.l"
 { debug(yytext); return NOT_EQ; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 74 "sea.l"
+#line 77 "sea.l"
 { debug(yytext); return LESS_EQ; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 75 "sea.l"
+#line 78 "sea.l"
 { debug(yytext); return MORE_EQ; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 77 "sea.l"
+#line 80 "sea.l"
 { debug(yytext); return ADD_EQ; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 78 "sea.l"
+#line 81 "sea.l"
 { debug(yytext); return SUB_EQ; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 79 "sea.l"
+#line 82 "sea.l"
 { debug(yytext); return MUL_EQ; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 80 "sea.l"
+#line 83 "sea.l"
 { debug(yytext); return DIV_EQ; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 81 "sea.l"
+#line 84 "sea.l"
 { debug(yytext); return MOD_EQ; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 83 "sea.l"
+#line 86 "sea.l"
 { debug(yytext); return SHL_EQ; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 84 "sea.l"
+#line 87 "sea.l"
 { debug(yytext); return SHR_EQ; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 85 "sea.l"
+#line 88 "sea.l"
 { debug(yytext); return AND_EQ; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 86 "sea.l"
+#line 89 "sea.l"
 { debug(yytext); return OR_EQ; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 87 "sea.l"
+#line 90 "sea.l"
 { debug(yytext); return XOR_EQ; }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 89 "sea.l"
+#line 92 "sea.l"
 { debug(yytext); COPY_STRTOK(yytext); return IDENTIFIER; }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 90 "sea.l"
+#line 93 "sea.l"
 { debug(yytext); COPY_STRTOK(yytext); return NUMBER; }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 91 "sea.l"
+#line 94 "sea.l"
 { debug(yytext); yylval.str = sea_tstr(bin_to_hex(yytext)); return NUMBER; }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 92 "sea.l"
+#line 95 "sea.l"
 { debug(yytext); COPY_STRTOK(yytext); return NUMBER; }
 	YY_BREAK
 case 44:
 /* rule 44 can match eol */
 YY_RULE_SETUP
-#line 93 "sea.l"
+#line 96 "sea.l"
 { debug(yytext); COPY_STRTOK(yytext); return QSTRING; }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 95 "sea.l"
+#line 98 "sea.l"
 { debug(yytext); sea_push_block(); return *yytext; }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 96 "sea.l"
+#line 99 "sea.l"
 { debug(yytext); sea_pop_block(); return *yytext; }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 98 "sea.l"
+#line 101 "sea.l"
 { debug(yytext); return *yytext; }
 	YY_BREAK
 case 48:
 /* rule 48 can match eol */
 YY_RULE_SETUP
-#line 99 "sea.l"
+#line 102 "sea.l"
 { debug(yytext); }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 101 "sea.l"
+#line 104 "sea.l"
 { error_bad_token(yytext); }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 103 "sea.l"
+#line 106 "sea.l"
 ECHO;
 	YY_BREAK
-#line 1111 "./src/yyscanner.c"
+#line 1114 "./src/yyscanner.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENT):
 	yyterminate();
@@ -2113,6 +2116,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 103 "sea.l"
+#line 106 "sea.l"
 
 

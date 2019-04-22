@@ -18,7 +18,7 @@ static inline struct SeaStr sea_str_init(enum SeaStrMem alloc, char* str) {
 
 struct SeaStr sea_hstr(char* str, ...) {
 
-    size_t buff_len = 1;
+    size_t buff_len = 2;
     char* arr[ARRLEN];
 
     va_list args;
@@ -27,14 +27,25 @@ struct SeaStr sea_hstr(char* str, ...) {
     int index = 0;
     do {
         buff_len += strlen(str);
+        if (CHEAP == str[0]) {
+            --buff_len;
+        }
+
         arr[index++] = str;
+
     } while((str = va_arg(args, char*)) != NULL);
 
     va_end(args);
 
-    char* buff = (char*)malloc(sizeof(char) * (buff_len + 1));
+    char* buff = (char*)calloc(sizeof(char), buff_len);
+    buff[0] = CHEAP;
     for(int i = 0; i < index; ++i) {
-        strcat(buff, arr[i]);
+        if (CHEAP == arr[i][0]) {
+            strcat(&buff[1], &arr[i][1]);
+            free(arr[i]);
+        } else {
+            strcat(&buff[1], arr[i]);
+        }
     }
 
     return sea_str_init(STR_HEAP, buff);

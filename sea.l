@@ -25,7 +25,10 @@ static inline void debug(const char* text) {
 }
 
 static inline struct SeaStr copy_token(const char* yytext) {
-    return sea_tstr(strcpy((char*)malloc(sizeof(char) * strlen(yytext) + 1), yytext));
+    char* str = (char*)malloc(sizeof(char) * (strlen(yytext) + 2));
+    str[0] = CHEAP;
+    strcpy(&str[1], yytext);
+    return sea_tstr(str);
 }
 
 // sets yylval to a token containing the scanned string

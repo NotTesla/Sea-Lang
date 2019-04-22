@@ -8,5 +8,6 @@ i32 main() {
 
 
     test("Hello World");
-    ret 0b1101;
+
+    ret 0;
 }

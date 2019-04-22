@@ -1,10 +1,10 @@
 #include <stdint.h>
 #include <stdio.h>
 int32_t main(){
-void test(const char* msg){
+void _SEA_fn_0test(const char* msg){
 printf("%s\n", msg);
 }
 
-test("Hello World");
+_SEA_fn_0test("Hello World");
 return 0;
 }

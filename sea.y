@@ -1,6 +1,7 @@
 %{
 #include "sea.h"
 #include "sea_translator.h"
+#include "sea_scope.h"
 
 #define EPSILON (sea_cstr(""))
 %}
@@ -78,7 +79,7 @@ type
     ;
 
 func
-    : type IDENTIFIER '(' params ')'    { $$ = sea_hstr($1.s, " ", $2.s, "(", $4.s, ")", NULL); }
+    : type IDENTIFIER '(' params ')'    { $$ = sea_fndecl($1.s, $2.s, $4.s); }
     ;
 
 func_def
@@ -123,7 +124,7 @@ statement
     ;
 
 func_call
-    : IDENTIFIER '(' call_params ')' ';'    { $$ = sea_hstr($1.s, "(", $3.s, ");", NULL); }
+    : IDENTIFIER '(' call_params ')' ';'    { $$ = sea_hstr(sea_getfndecl($1.s).s, "(", $3.s, ");", NULL); }
     ;
 
 call_params

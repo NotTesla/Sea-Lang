@@ -66,10 +66,11 @@
 
 #include "sea.h"
 #include "sea_translator.h"
+#include "sea_scope.h"
 
 #define EPSILON (sea_cstr(""))
 
-#line 73 "./src/yyparser.c" /* yacc.c:339  */
+#line 74 "./src/yyparser.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -99,12 +100,12 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 8 "sea.y" /* yacc.c:355  */
+#line 9 "sea.y" /* yacc.c:355  */
 
 
 #include "sea_str.h"
 
-#line 108 "./src/yyparser.c" /* yacc.c:355  */
+#line 109 "./src/yyparser.c" /* yacc.c:355  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -202,11 +203,11 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 13 "sea.y" /* yacc.c:355  */
+#line 14 "sea.y" /* yacc.c:355  */
 
     struct SeaStr str;
 
-#line 210 "./src/yyparser.c" /* yacc.c:355  */
+#line 211 "./src/yyparser.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -223,7 +224,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 227 "./src/yyparser.c" /* yacc.c:358  */
+#line 228 "./src/yyparser.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -524,12 +525,12 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    44,    44,    48,    49,    53,    54,    55,    59,    62,
-      63,    64,    65,    66,    67,    68,    69,    70,    71,    72,
-      73,    74,    75,    76,    77,    81,    85,    89,    93,    94,
-      98,    99,   100,   104,   105,   109,   113,   114,   118,   119,
-     120,   121,   122,   126,   130,   131,   135,   136,   140,   141,
-     145,   146,   147,   148
+       0,    45,    45,    49,    50,    54,    55,    56,    60,    63,
+      64,    65,    66,    67,    68,    69,    70,    71,    72,    73,
+      74,    75,    76,    77,    78,    82,    86,    90,    94,    95,
+      99,   100,   101,   105,   106,   110,   114,   115,   119,   120,
+     121,   122,   123,   127,   131,   132,   136,   137,   141,   142,
+     146,   147,   148,   149
 };
 #endif
 
@@ -1354,319 +1355,319 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 44 "sea.y" /* yacc.c:1646  */
+#line 45 "sea.y" /* yacc.c:1646  */
     { sea_translate((yyvsp[0].str)); }
-#line 1360 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1361 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 48 "sea.y" /* yacc.c:1646  */
+#line 49 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_hstr((yyvsp[-1].str).s, (yyvsp[0].str).s, NULL); }
-#line 1366 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1367 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 49 "sea.y" /* yacc.c:1646  */
+#line 50 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = EPSILON; }
-#line 1372 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1373 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 53 "sea.y" /* yacc.c:1646  */
+#line 54 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = (yyvsp[0].str); }
-#line 1378 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1379 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 54 "sea.y" /* yacc.c:1646  */
+#line 55 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = (yyvsp[0].str); }
-#line 1384 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1385 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 55 "sea.y" /* yacc.c:1646  */
+#line 56 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = (yyvsp[0].str); }
-#line 1390 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1391 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 59 "sea.y" /* yacc.c:1646  */
+#line 60 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = (yyvsp[0].str); }
-#line 1396 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1397 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 62 "sea.y" /* yacc.c:1646  */
+#line 63 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = (yyvsp[0].str); }
-#line 1402 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1403 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 63 "sea.y" /* yacc.c:1646  */
+#line 64 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_fint(I8); }
-#line 1408 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1409 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 64 "sea.y" /* yacc.c:1646  */
+#line 65 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_fint(I16); }
-#line 1414 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1415 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 65 "sea.y" /* yacc.c:1646  */
+#line 66 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_fint(I32); }
-#line 1420 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1421 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 66 "sea.y" /* yacc.c:1646  */
+#line 67 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_fint(I64); }
-#line 1426 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1427 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 67 "sea.y" /* yacc.c:1646  */
+#line 68 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_fint(I8); }
-#line 1432 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1433 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 68 "sea.y" /* yacc.c:1646  */
+#line 69 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_fint(I16); }
-#line 1438 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1439 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 69 "sea.y" /* yacc.c:1646  */
+#line 70 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_fint(I32); }
-#line 1444 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1445 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 70 "sea.y" /* yacc.c:1646  */
+#line 71 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_fint(I64); }
-#line 1450 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1451 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 71 "sea.y" /* yacc.c:1646  */
+#line 72 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_cstr("float"); }
-#line 1456 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1457 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 72 "sea.y" /* yacc.c:1646  */
+#line 73 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_cstr("double"); }
-#line 1462 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1463 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 73 "sea.y" /* yacc.c:1646  */
+#line 74 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_cstr("int"); }
-#line 1468 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1469 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 74 "sea.y" /* yacc.c:1646  */
+#line 75 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_cstr("const char*"); }
-#line 1474 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1475 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 75 "sea.y" /* yacc.c:1646  */
+#line 76 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_cstr("char"); }
-#line 1480 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1481 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 76 "sea.y" /* yacc.c:1646  */
+#line 77 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_cstr("size_t"); }
-#line 1486 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1487 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 77 "sea.y" /* yacc.c:1646  */
+#line 78 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_cstr("void"); }
-#line 1492 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1493 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 81 "sea.y" /* yacc.c:1646  */
-    { (yyval.str) = sea_hstr((yyvsp[-4].str).s, " ", (yyvsp[-3].str).s, "(", (yyvsp[-1].str).s, ")", NULL); }
-#line 1498 "./src/yyparser.c" /* yacc.c:1646  */
+#line 82 "sea.y" /* yacc.c:1646  */
+    { (yyval.str) = sea_fndecl((yyvsp[-4].str).s, (yyvsp[-3].str).s, (yyvsp[-1].str).s); }
+#line 1499 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 85 "sea.y" /* yacc.c:1646  */
+#line 86 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_hstr((yyvsp[-1].str).s, (yyvsp[0].str).s, NULL); }
-#line 1504 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1505 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 89 "sea.y" /* yacc.c:1646  */
+#line 90 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_hstr((yyvsp[-1].str).s, ";", NULL); }
-#line 1510 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1511 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 93 "sea.y" /* yacc.c:1646  */
+#line 94 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_hstr((yyvsp[-1].str).s, (yyvsp[0].str).s, NULL); }
-#line 1516 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1517 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 94 "sea.y" /* yacc.c:1646  */
+#line 95 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = EPSILON; }
-#line 1522 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1523 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 98 "sea.y" /* yacc.c:1646  */
+#line 99 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_hstr(", ", (yyvsp[-1].str).s, (yyvsp[0].str).s, NULL); }
-#line 1528 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1529 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 99 "sea.y" /* yacc.c:1646  */
+#line 100 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_cstr("...");}
-#line 1534 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1535 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 100 "sea.y" /* yacc.c:1646  */
+#line 101 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = EPSILON; }
-#line 1540 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1541 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 104 "sea.y" /* yacc.c:1646  */
+#line 105 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_hstr((yyvsp[-1].str).s, " ", (yyvsp[0].str).s, NULL); }
-#line 1546 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1547 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 105 "sea.y" /* yacc.c:1646  */
+#line 106 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = (yyvsp[0].str); }
-#line 1552 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1553 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 109 "sea.y" /* yacc.c:1646  */
+#line 110 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_hstr("{\n", (yyvsp[-1].str).s, "}\n", NULL); }
-#line 1558 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1559 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 113 "sea.y" /* yacc.c:1646  */
+#line 114 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_hstr((yyvsp[-1].str).s, "\n", (yyvsp[0].str).s, NULL); }
-#line 1564 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1565 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 114 "sea.y" /* yacc.c:1646  */
+#line 115 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = EPSILON; }
-#line 1570 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1571 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 118 "sea.y" /* yacc.c:1646  */
+#line 119 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = (yyvsp[0].str); }
-#line 1576 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1577 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 119 "sea.y" /* yacc.c:1646  */
+#line 120 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = (yyvsp[0].str); }
-#line 1582 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1583 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 120 "sea.y" /* yacc.c:1646  */
+#line 121 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = (yyvsp[0].str); }
-#line 1588 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1589 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 121 "sea.y" /* yacc.c:1646  */
+#line 122 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = (yyvsp[0].str); }
-#line 1594 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1595 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 122 "sea.y" /* yacc.c:1646  */
+#line 123 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = (yyvsp[0].str); }
-#line 1600 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1601 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 126 "sea.y" /* yacc.c:1646  */
-    { (yyval.str) = sea_hstr((yyvsp[-4].str).s, "(", (yyvsp[-2].str).s, ");", NULL); }
-#line 1606 "./src/yyparser.c" /* yacc.c:1646  */
+#line 127 "sea.y" /* yacc.c:1646  */
+    { (yyval.str) = sea_hstr(sea_getfndecl((yyvsp[-4].str).s).s, "(", (yyvsp[-2].str).s, ");", NULL); }
+#line 1607 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 130 "sea.y" /* yacc.c:1646  */
+#line 131 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_hstr((yyvsp[-1].str).s, (yyvsp[0].str).s, NULL); }
-#line 1612 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1613 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 131 "sea.y" /* yacc.c:1646  */
+#line 132 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = EPSILON; }
-#line 1618 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1619 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 135 "sea.y" /* yacc.c:1646  */
+#line 136 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_hstr(", ", (yyvsp[-1].str).s, (yyvsp[0].str).s, NULL); }
-#line 1624 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1625 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 136 "sea.y" /* yacc.c:1646  */
+#line 137 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = EPSILON; }
-#line 1630 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1631 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 140 "sea.y" /* yacc.c:1646  */
+#line 141 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_cstr("return;"); }
-#line 1636 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1637 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 141 "sea.y" /* yacc.c:1646  */
+#line 142 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = sea_hstr("return ", (yyvsp[-1].str).s, ";", NULL); }
-#line 1642 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1643 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 145 "sea.y" /* yacc.c:1646  */
+#line 146 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = (yyvsp[0].str); }
-#line 1648 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1649 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 146 "sea.y" /* yacc.c:1646  */
+#line 147 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = (yyvsp[0].str); }
-#line 1654 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1655 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 147 "sea.y" /* yacc.c:1646  */
+#line 148 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = (yyvsp[0].str); }
-#line 1660 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1661 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 148 "sea.y" /* yacc.c:1646  */
+#line 149 "sea.y" /* yacc.c:1646  */
     { (yyval.str) = (yyvsp[0].str); }
-#line 1666 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1667 "./src/yyparser.c" /* yacc.c:1646  */
     break;
 
 
-#line 1670 "./src/yyparser.c" /* yacc.c:1646  */
+#line 1671 "./src/yyparser.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1894,5 +1895,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 151 "sea.y" /* yacc.c:1906  */
+#line 152 "sea.y" /* yacc.c:1906  */
 

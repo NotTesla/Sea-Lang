@@ -32,7 +32,7 @@ void sea_write_translation(FILE* out) {
             fprintf(out, "#include %s\n", INCLUDE[i]);
     }
 
-    fprintf(out, "%s", p.s);
+    fprintf(out, "%s", &p.s[1]);
 }
 
 struct SeaStr sea_fint(int type) {

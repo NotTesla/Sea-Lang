@@ -1,6 +1,8 @@
 #ifndef __SEA_STR_H__
 #define __SEA_STR_H__
 
+#define CHEAP 1
+
 enum SeaStrMem {
     STR_HEAP,
     STR_TOKEN,

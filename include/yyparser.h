@@ -40,7 +40,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 8 "sea.y" /* yacc.c:1909  */
+#line 9 "sea.y" /* yacc.c:1909  */
 
 
 #include "sea_str.h"
@@ -143,7 +143,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 13 "sea.y" /* yacc.c:1909  */
+#line 14 "sea.y" /* yacc.c:1909  */
 
     struct SeaStr str;
 
