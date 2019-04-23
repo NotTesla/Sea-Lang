@@ -73,26 +73,29 @@ extern int yydebug;
     FALSE = 276,
     PSIZE = 277,
     VOID = 278,
-    CAP = 279,
-    MUT = 280,
-    RET = 281,
-    IF = 282,
-    ELSE = 283,
-    VARGS = 284,
-    IS_EQ = 285,
-    NOT_EQ = 286,
-    LESS_EQ = 287,
-    MORE_EQ = 288,
-    ADD_EQ = 289,
-    SUB_EQ = 290,
-    MUL_EQ = 291,
-    DIV_EQ = 292,
-    MOD_EQ = 293,
-    SHL_EQ = 294,
-    SHR_EQ = 295,
-    AND_EQ = 296,
-    XOR_EQ = 297,
-    OR_EQ = 298
+    FN = 279,
+    CAP = 280,
+    DEF = 281,
+    VAR = 282,
+    RET = 283,
+    IF = 284,
+    ELSE = 285,
+    VARGS = 286,
+    NAMESPACE = 287,
+    IS_EQ = 288,
+    NOT_EQ = 289,
+    LESS_EQ = 290,
+    MORE_EQ = 291,
+    ADD_EQ = 292,
+    SUB_EQ = 293,
+    MUL_EQ = 294,
+    DIV_EQ = 295,
+    MOD_EQ = 296,
+    SHL_EQ = 297,
+    SHR_EQ = 298,
+    AND_EQ = 299,
+    XOR_EQ = 300,
+    OR_EQ = 301
   };
 #endif
 /* Tokens.  */
@@ -117,26 +120,29 @@ extern int yydebug;
 #define FALSE 276
 #define PSIZE 277
 #define VOID 278
-#define CAP 279
-#define MUT 280
-#define RET 281
-#define IF 282
-#define ELSE 283
-#define VARGS 284
-#define IS_EQ 285
-#define NOT_EQ 286
-#define LESS_EQ 287
-#define MORE_EQ 288
-#define ADD_EQ 289
-#define SUB_EQ 290
-#define MUL_EQ 291
-#define DIV_EQ 292
-#define MOD_EQ 293
-#define SHL_EQ 294
-#define SHR_EQ 295
-#define AND_EQ 296
-#define XOR_EQ 297
-#define OR_EQ 298
+#define FN 279
+#define CAP 280
+#define DEF 281
+#define VAR 282
+#define RET 283
+#define IF 284
+#define ELSE 285
+#define VARGS 286
+#define NAMESPACE 287
+#define IS_EQ 288
+#define NOT_EQ 289
+#define LESS_EQ 290
+#define MORE_EQ 291
+#define ADD_EQ 292
+#define SUB_EQ 293
+#define MUL_EQ 294
+#define DIV_EQ 295
+#define MOD_EQ 296
+#define SHL_EQ 297
+#define SHR_EQ 298
+#define AND_EQ 299
+#define XOR_EQ 300
+#define OR_EQ 301
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -147,7 +153,7 @@ union YYSTYPE
 
     struct SeaStr str;
 
-#line 151 "./include/yyparser.h" /* yacc.c:1909  */
+#line 157 "./include/yyparser.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

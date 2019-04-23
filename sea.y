@@ -20,13 +20,14 @@
 %token I8 I16 I32 I64 U8 U16 U32 U64 F32 F64
 
 %token WORD CSTR BOOL TRUE FALSE PSIZE VOID
-%token CAP MUT RET IF ELSE VARGS
+%token FN CAP DEF VAR RET IF ELSE VARGS
+%token NAMESPACE
 
 %token IS_EQ NOT_EQ LESS_EQ MORE_EQ
 %token ADD_EQ SUB_EQ MUL_EQ DIV_EQ MOD_EQ
 %token SHL_EQ SHR_EQ AND_EQ XOR_EQ OR_EQ
 
-%type <str> global _global type include
+%type <str> global _global type option_type include
 %type <str> return_stmt expression
 %type <str> func_call call_params _call_params
 %type <str> params _params param
@@ -57,7 +58,8 @@ global
     ;
 
 include
-    : CINCLUDE   { $$ = $1; }
+    : CINCLUDE QSTRING { $$ = sea_hstr("#include ", $2.s, "\n", NULL); }
+    ;
 
 type
     : IDENTIFIER    { $$ = $1; }
@@ -78,8 +80,13 @@ type
     | VOID          { $$ = sea_cstr("void"); }
     ;
 
+option_type
+    : type  { $$ = $1; }
+    |       { $$ = sea_cstr("void"); }
+    ;
+
 func
-    : type IDENTIFIER '(' params ')'    { $$ = sea_fndecl($1.s, $2.s, $4.s); }
+    : DEF IDENTIFIER '=' FN '(' params ')' option_type    { $$ = sea_fndecl($8.s, $2.s, $6.s); }
     ;
 
 func_def
@@ -92,18 +99,18 @@ func_decl
 
 params
     : param _params { $$ = sea_hstr($1.s, $2.s, NULL); }
-    |               { $$ = EPSILON; } 
+    |               { $$ = sea_cstr("void"); } 
     ;
 
 _params
     : ',' param _params { $$ = sea_hstr(", ", $2.s, $3.s, NULL); }
-    | VARGS             { $$ = sea_cstr("...");}
     |                   { $$ = EPSILON; }
     ;
 
 param
-    : type IDENTIFIER   { $$ = sea_hstr($1.s, " ", $2.s, NULL); }
-    | type              { $$ = $1; }
+    : IDENTIFIER type VARGS { $$ = sea_hstr($2.s, " ", $1.s, "...", NULL); }
+    | IDENTIFIER type       { $$ = sea_hstr($2.s, " ", $1.s, NULL); }
+    | type                  { $$ = $1; }
     ;
 
 block

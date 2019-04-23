@@ -1,10 +1,9 @@
-#include <stdint.h>
-#include <stdio.h>
-int32_t main(){
-void _SEA_fn_0test(const char* msg){
+#include "stdio.h"
+int main(void){
+void foo_0sfn(const char* msg){
 printf("%s\n", msg);
 }
 
-_SEA_fn_0test("Hello World");
+foo_0sfn("Hello World");
 return 0;
 }

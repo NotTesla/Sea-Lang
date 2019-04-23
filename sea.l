@@ -4,7 +4,7 @@ bin_num 0b[01]+
 dec_num [0-9]*(\.[0-9]+(e(\+|\-)[0-9]+)?)?
 str \"[^\"]*\"
 single_line_comment \/\/[^\n\r]*
-single_char_punc [-+*/%^|!&;,()\[\].<>]
+single_char_punc [-+*/%^=|!&;,()\[\].<>]
 whitespace [ \t]|(\r?\n)
 
 %{
@@ -42,7 +42,9 @@ static inline struct SeaStr copy_token(const char* yytext) {
 
 <INITIAL>{single_line_comment} { debug(yytext); }
 
-<INITIAL>"#include <".+".h>"\r?\n { debug(yytext); COPY_STRTOK(yytext); return CINCLUDE; }
+<INITIAL>"incl" { debug(yytext); return CINCLUDE; }
+<INITIAL>"uses" { debug(yytext); }
+
 <INITIAL>"i8"   { debug(yytext); return I8; }
 <INITIAL>"i16"  { debug(yytext); return I16; }
 <INITIAL>"i32"  { debug(yytext); return I32; }
@@ -64,8 +66,12 @@ static inline struct SeaStr copy_token(const char* yytext) {
 <INITIAL>"psize"    { debug(yytext); return PSIZE; }
 <INITIAL>"void"     { debug(yytext); return VOID; }
 
+<INITIAL>"namespace" { debug(yytext); return NAMESPACE; }
+
+<INITIAL>"fn"   { debug(yytext); return FN; }
 <INITIAL>"cap"  { debug(yytext); return CAP; }
-<INITIAL>"mut"  { debug(yytext); return MUT; }
+<INITIAL>"def"  { debug(yytext); return DEF; }
+<INITIAL>"var"  { debug(yytext); return VAR; }
 <INITIAL>"ret"  { debug(yytext); return RET; }
 <INITIAL>"if"   { debug(yytext); return IF; }
 <INITIAL>"else" { debug(yytext); return ELSE; }

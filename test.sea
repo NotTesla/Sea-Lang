@@ -1,13 +1,12 @@
-#include <stdio.h>
+incl "stdio.h"
 
-i32 main() {
+def main = fn() word {
 
-    void test(cstr msg) {
+    def foo = fn(msg cstr) void {
         printf("%s\n", msg);
     }
 
-
-    test("Hello World");
+    foo("Hello World");
 
     ret 0;
 }

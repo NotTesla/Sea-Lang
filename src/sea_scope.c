@@ -7,7 +7,16 @@
 #include <stdlib.h>
 
 #define ID_BUFFER_LEN 100
-#define SEA_FN "_SEA_fn_"
+
+#define SEA_FUN "sfn"
+#define SEA_CAP "scp"
+#define SEA_LAM "slm"
+
+struct SeaFunction {
+    char* id;
+    char* type;
+    char* params;
+};
 
 struct SeaFrame {
     char id[ID_BUFFER_LEN];
@@ -62,12 +71,11 @@ struct SeaStr sea_fndecl(char* type, char* id, char* params) {
 
     struct SeaStr fn_decl;
     if (stack->prev != NULL) {
-        char** fn = stack->fn;
-        while (*fn != NULL) {
+        char** fn;
+        for (fn = stack->fn; *fn != NULL; ++fn) {
             if (strcmp(*fn, id) == 0) {
                 break;
             }
-            ++fn;
         }
         *fn = malloc(strlen(id) + 1);
         strcpy(*fn, id);
@@ -93,14 +101,12 @@ struct SeaStr sea_getfndecl(char* id) {
     struct SeaFrame* frame = stack;
 
     do {
-        char** fn = stack->fn;
-
-        while (*fn != NULL) {
+        for (char** fn = stack->fn; *fn != NULL; ++fn) {
             if (strcmp(*fn, id) == 0) {
-                return sea_hstr(SEA_FN, stack->id, id, NULL);
+                return sea_hstr(id, "_", stack->id, SEA_FUN, NULL);
             }
-            ++fn;
         }
+
     } while ((frame = frame->prev) != NULL);
 
     return sea_hstr(id, NULL);
