@@ -15,8 +15,14 @@
 
 int main(int argc, char** argv) {
 
-    char const*const infile = argv[1];
-    char const*const outfile = argv[2];
+    // TODO: properly parse args
+    if (argc < 3) {
+        fprintf(stderr, SEA_ERR("synopsis: sea in.sea out.c"));
+        return 1;
+    }
+
+    const char* infile = argv[1];
+    const char* outfile = argv[2];
 
     yyin = fopen(infile, "r");
     if (yyin == NULL) {

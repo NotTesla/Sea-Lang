@@ -15,23 +15,23 @@
     struct SeaStr str;
 }
 
-%token <str> IDENTIFIER QSTRING NUMBER CINCLUDE
+%token <str> IDENTIFIER QSTRING NUMBER
 
 %token I8 I16 I32 I64 U8 U16 U32 U64 F32 F64
 
-%token WORD CSTR BOOL TRUE FALSE PSIZE VOID
+%token UWORD WORD CSTR BOOL TRUE FALSE PSIZE VOID
 %token FN CAP DEF VAR RET IF ELSE VARGS
-%token NAMESPACE
+%token NAMESPACE INC_SEA_DEP INC_C_DEP
 
 %token IS_EQ NOT_EQ LESS_EQ MORE_EQ
 %token ADD_EQ SUB_EQ MUL_EQ DIV_EQ MOD_EQ
 %token SHL_EQ SHR_EQ AND_EQ XOR_EQ OR_EQ
 
-%type <str> global _global type option_type include
+%type <str> type option_type include
 %type <str> return_stmt expression
 %type <str> func_call call_params _call_params
 %type <str> params _params param
-%type <str> func func_decl func_def
+%type <str> func
 %type <str> block _statement statement
 
 %left '+' '-'
@@ -43,22 +43,31 @@
 %%
 
 program
-    : _global   { sea_translate($1); }
+    : _global
     ;
 
 _global
-    : global _global    { $$ = sea_hstr($1.s, $2.s, NULL); }
-    |                   { $$ = EPSILON; }
+    : global _global
+    |
     ;
 
 global
-    : func_def  { $$ = $1; }
-    | func_decl { $$ = $1; }
-    | include   { $$ = $1; }
+    : func_def
+    | func_decl
+    | include
     ;
 
 include
-    : CINCLUDE QSTRING { $$ = sea_hstr("#include ", $2.s, "\n", NULL); }
+    : INC_C_DEP QSTRING
+    {
+        sea_c_dep(&$2.s[1]);
+        $$ = EPSILON;
+    }
+    | INC_SEA_DEP IDENTIFIER
+    {
+        sea_sea_dep(&$2.s[1]);
+        $$ = EPSILON;
+    }
     ;
 
 type
@@ -74,6 +83,7 @@ type
     | F32           { $$ = sea_cstr("float"); }
     | F64           { $$ = sea_cstr("double"); }
     | WORD          { $$ = sea_cstr("int"); }
+    | UWORD         { $$ = sea_cstr("unsigned int"); }
     | CSTR          { $$ = sea_cstr("const char*"); }
     | BOOL          { $$ = sea_cstr("char"); }
     | PSIZE         { $$ = sea_cstr("size_t"); }
@@ -86,15 +96,20 @@ option_type
     ;
 
 func
-    : DEF IDENTIFIER '=' FN '(' params ')' option_type    { $$ = sea_fndecl($8.s, $2.s, $6.s); }
+    : DEF IDENTIFIER FN '(' params ')' option_type
+    {
+        struct SeaStr decl = sea_fndecl($7.s, $2.s, $5.s);
+        sea_forward_decl(&decl.s[1]);
+        $$ = decl;
+    }
     ;
 
 func_def
-    : func block    { $$ = sea_hstr($1.s, $2.s, NULL); }
+    : func '=' block    { sea_func_def(&sea_hstr($1.s, $3.s, NULL).s[1]); }
     ;
 
 func_decl
-    : func ';'  { $$ = sea_hstr($1.s, ";", NULL); }
+    : func ';'
     ;
 
 params
@@ -123,15 +138,15 @@ _statement
     ;
 
 statement
-    : func_decl     { $$ = $1; }
-    | func_def      { $$ = $1; }
-    | func_call     { $$ = $1; }
+    : func_decl     { $$ = EPSILON; }
+    | func_def      { $$ = EPSILON; }
+    | func_call ';' { $$ = $1; }
     | return_stmt   { $$ = $1; }
     | block         { $$ = $1; }
     ;
 
 func_call
-    : IDENTIFIER '(' call_params ')' ';'    { $$ = sea_hstr(sea_getfndecl($1.s).s, "(", $3.s, ");", NULL); }
+    : IDENTIFIER '(' call_params ')'    { $$ = sea_hstr(sea_getfndecl($1.s).s, "(", $3.s, ");", NULL); }
     ;
 
 call_params

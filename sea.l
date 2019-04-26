@@ -1,7 +1,7 @@
 id [a-zA-Z_][a-zA-Z0-9_]*
 hex_num 0x[0-9A-Fa-f]+
 bin_num 0b[01]+
-dec_num [0-9]*(\.[0-9]+(e(\+|\-)[0-9]+)?)?
+dec_num [+-]?([0-9]+|([0-9]*(\.[0-9]+(e[+-][0-9]+)?)?))
 str \"[^\"]*\"
 single_line_comment \/\/[^\n\r]*
 single_char_punc [-+*/%^=|!&;,()\[\].<>]
@@ -42,8 +42,8 @@ static inline struct SeaStr copy_token(const char* yytext) {
 
 <INITIAL>{single_line_comment} { debug(yytext); }
 
-<INITIAL>"incl" { debug(yytext); return CINCLUDE; }
-<INITIAL>"uses" { debug(yytext); }
+<INITIAL>"incl" { debug(yytext); return INC_C_DEP; }
+<INITIAL>"uses" { debug(yytext); return INC_SEA_DEP; }
 
 <INITIAL>"i8"   { debug(yytext); return I8; }
 <INITIAL>"i16"  { debug(yytext); return I16; }
@@ -58,7 +58,9 @@ static inline struct SeaStr copy_token(const char* yytext) {
 <INITIAL>"f32"  { debug(yytext); return F32; }
 <INITIAL>"f64"  { debug(yytext); return F64; }
 
-<INITIAL>"word"     { debug(yytext); return WORD; }
+<INITIAL>"uword"    { debug(yytext); return UWORD; }
+<INITIAL>"word"    { debug(yytext); return WORD; }
+
 <INITIAL>"cstr"     { debug(yytext); return CSTR; }
 <INITIAL>"bool"     { debug(yytext); return BOOL; }
 <INITIAL>"true"     { debug(yytext); return TRUE; }
@@ -70,6 +72,7 @@ static inline struct SeaStr copy_token(const char* yytext) {
 
 <INITIAL>"fn"   { debug(yytext); return FN; }
 <INITIAL>"cap"  { debug(yytext); return CAP; }
+<INITIAL>"pub"  { debug(yytext); }
 <INITIAL>"def"  { debug(yytext); return DEF; }
 <INITIAL>"var"  { debug(yytext); return VAR; }
 <INITIAL>"ret"  { debug(yytext); return RET; }

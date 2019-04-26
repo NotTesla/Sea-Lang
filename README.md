@@ -12,15 +12,15 @@ Provide a high-level set of abstractions for common operations on the C language
 ### Project setup
 1. clone the [repository](https://github.com/NotTesla/Sea-Lang)
 2. run `make`
-3. (TODO: this part doesn't work yet) ./build/sea [input.sea] [output.c]
+3. ./build/sea [input.sea] [output.c]
 
 ## Sea Development
 I am somewhat-actively developing sea, take a look at the roadmap if you would like to assist in development. Features don't need to be implemented in the order listed
 
 ## Sea Roadmap
-- (In Progress) Translate to C
+- Generate AST instead of translating directly to C
 - (In Progress) Lambdas
-- Implement all features currently in C
 - Generics
 - Implement references/optionals
 - Type inference
+- Remove lex/yacc dependency

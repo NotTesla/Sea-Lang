@@ -1,12 +1,15 @@
 incl "stdio.h"
 
-def main = fn() word {
+pub def main fn() word = {
 
-    def foo = fn(msg cstr) void {
+    def foo fn(msg cstr) u32 = {
+        def bar fn() = {}
+
         printf("%s\n", msg);
+        ret 0;
     }
 
-    foo("Hello World");
+    bar();
 
-    ret 0;
+    ret foo("Hello World");
 }

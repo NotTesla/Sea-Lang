@@ -55,17 +55,17 @@ extern int yydebug;
     IDENTIFIER = 258,
     QSTRING = 259,
     NUMBER = 260,
-    CINCLUDE = 261,
-    I8 = 262,
-    I16 = 263,
-    I32 = 264,
-    I64 = 265,
-    U8 = 266,
-    U16 = 267,
-    U32 = 268,
-    U64 = 269,
-    F32 = 270,
-    F64 = 271,
+    I8 = 261,
+    I16 = 262,
+    I32 = 263,
+    I64 = 264,
+    U8 = 265,
+    U16 = 266,
+    U32 = 267,
+    U64 = 268,
+    F32 = 269,
+    F64 = 270,
+    UWORD = 271,
     WORD = 272,
     CSTR = 273,
     BOOL = 274,
@@ -82,37 +82,39 @@ extern int yydebug;
     ELSE = 285,
     VARGS = 286,
     NAMESPACE = 287,
-    IS_EQ = 288,
-    NOT_EQ = 289,
-    LESS_EQ = 290,
-    MORE_EQ = 291,
-    ADD_EQ = 292,
-    SUB_EQ = 293,
-    MUL_EQ = 294,
-    DIV_EQ = 295,
-    MOD_EQ = 296,
-    SHL_EQ = 297,
-    SHR_EQ = 298,
-    AND_EQ = 299,
-    XOR_EQ = 300,
-    OR_EQ = 301
+    INC_SEA_DEP = 288,
+    INC_C_DEP = 289,
+    IS_EQ = 290,
+    NOT_EQ = 291,
+    LESS_EQ = 292,
+    MORE_EQ = 293,
+    ADD_EQ = 294,
+    SUB_EQ = 295,
+    MUL_EQ = 296,
+    DIV_EQ = 297,
+    MOD_EQ = 298,
+    SHL_EQ = 299,
+    SHR_EQ = 300,
+    AND_EQ = 301,
+    XOR_EQ = 302,
+    OR_EQ = 303
   };
 #endif
 /* Tokens.  */
 #define IDENTIFIER 258
 #define QSTRING 259
 #define NUMBER 260
-#define CINCLUDE 261
-#define I8 262
-#define I16 263
-#define I32 264
-#define I64 265
-#define U8 266
-#define U16 267
-#define U32 268
-#define U64 269
-#define F32 270
-#define F64 271
+#define I8 261
+#define I16 262
+#define I32 263
+#define I64 264
+#define U8 265
+#define U16 266
+#define U32 267
+#define U64 268
+#define F32 269
+#define F64 270
+#define UWORD 271
 #define WORD 272
 #define CSTR 273
 #define BOOL 274
@@ -129,20 +131,22 @@ extern int yydebug;
 #define ELSE 285
 #define VARGS 286
 #define NAMESPACE 287
-#define IS_EQ 288
-#define NOT_EQ 289
-#define LESS_EQ 290
-#define MORE_EQ 291
-#define ADD_EQ 292
-#define SUB_EQ 293
-#define MUL_EQ 294
-#define DIV_EQ 295
-#define MOD_EQ 296
-#define SHL_EQ 297
-#define SHR_EQ 298
-#define AND_EQ 299
-#define XOR_EQ 300
-#define OR_EQ 301
+#define INC_SEA_DEP 288
+#define INC_C_DEP 289
+#define IS_EQ 290
+#define NOT_EQ 291
+#define LESS_EQ 292
+#define MORE_EQ 293
+#define ADD_EQ 294
+#define SUB_EQ 295
+#define MUL_EQ 296
+#define DIV_EQ 297
+#define MOD_EQ 298
+#define SHL_EQ 299
+#define SHR_EQ 300
+#define AND_EQ 301
+#define XOR_EQ 302
+#define OR_EQ 303
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -153,7 +157,7 @@ union YYSTYPE
 
     struct SeaStr str;
 
-#line 157 "./include/yyparser.h" /* yacc.c:1909  */
+#line 161 "./include/yyparser.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
