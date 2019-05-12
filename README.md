@@ -24,3 +24,6 @@ I am somewhat-actively developing sea, take a look at the roadmap if you would l
 - Implement references/optionals
 - Type inference
 - Remove lex/yacc dependency
+
+## Resources
+- lex: http://nothings.org/computer/lexing.html

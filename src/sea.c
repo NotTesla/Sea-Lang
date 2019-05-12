@@ -30,7 +30,6 @@ int main(int argc, char** argv) {
     }
 
     int parse = yyparse();
-    fprintf(stdout, SEA_DBG("Parse completed with return value %d"), parse);
     fclose(yyin);
 
     switch (parse) {

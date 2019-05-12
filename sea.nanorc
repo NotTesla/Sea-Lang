@@ -4,11 +4,8 @@ syntax "sea" "\.sea$"
 magic "(ASCII|UTF-8 Unicode) sea? program text"
 comment "//"
 
-# Type Names
-color cyan "\<[A-Z][0-9a-z]+([A-Z_][0-9a-z]*)*?\>"
-
 # Primitives
-color cyan "\<(f64|f32|bool|cstr|word|uword|((u|i)?(8|16|32|64)))\>"
+color cyan "\<(f64|f32|void|bool|cstr|psize|word|uword|((u|i)?(8|16|32|64)))\>"
 
 # Declarations
 color green "\<(namespace|fn|struct|def|var|pub|uses|incl)\>"
@@ -19,18 +16,26 @@ color yellow "\<(for|if|while|do|else|case|default|switch)\>"
 # Control Flow
 color magenta "\<(goto|continue|break|ret)\>"
 
+# Type Names
+color brightcyan "\<[A-Z][0-9a-z]+([A-Z_][0-9a-z]*)*?\>"
+
+# Constants
+color red "\<(true|false|cap)\>"
+
 # Numbers
-color yellow "\<(0b[01]+|[+-]?[0-9]*\.[0-9]+)\>"
+color blue "\<[0-9]+(\.[0-9]+(e[+-][0-9]+)?)?\>"
+color blue "\<0b[01]+\>"
+color blue "\<0x[0-9A-Fa-f]+\>"
 
 # Strings
-color yellow ""([^"]|\\")*"" "<[^[:blank:]=]*>"
+color blue ""([^"]|\\")*"" "<[^[:blank:]=]*>"
 
 # Comments.
 color blue "//.*"
 color blue start="/\*" end="\*/"
 
 # Reminders.
-color ,yellow "\<(FIXME|TODO|XXX)\>"
+color white,blue "\<(FIXME|TODO|XXX)\>"
 
 # Trailing whitespace.
 color ,green "[[:space:]]+$"

@@ -17,13 +17,13 @@ void bar_01sfn(void){
 int32_t foo_0sfn(const char* msg){
 
 printf("%s\n", msg);
+bar_01sfn();
 return 0;
 }
 
 int main(void){
 
-bar();
-return foo_0sfn("Hello World");;
+return foo_0sfn("Hello World");
 }
 
 

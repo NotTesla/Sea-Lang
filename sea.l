@@ -10,7 +10,7 @@ whitespace [ \t]|(\r?\n)
 %{
 #include <stdio.h>
 #include <string.h>
-#include "yyparser.h"
+#include "yyparser.hpp"
 #include "sea.h"
 #include "sea_str.h"
 #include "sea_scope.h"

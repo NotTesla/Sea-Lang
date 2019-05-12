@@ -1,4 +1,4 @@
-CC = gcc
+CC = g++
 
 SDIR = ./src
 IDIR = ./include
@@ -15,9 +15,9 @@ YACCI = sea.y
 FLEXO = yyscanner
 YACCO = yyparser
 
-CFLAGS = -g -Wall -Werror -Wextra -Wno-sign-compare -Wno-unused-parameter -Wno-unused-function -I$(IDIR)
+CFLAGS = -g -Wall -Werror -Wextra -Wno-sign-compare -Wno-unused-parameter -Wno-unused-function -I$(IDIR) -I/usr/include/
 
-_DEPS = $(YACCO).h sea_debug.h sea_str.h sea_scope.h sea_translator.h sea.h lexer.h
+_DEPS = $(YACCO).hpp stack.hh sea_debug.h sea_str.h sea_scope.h sea_translator.h sea.h lexer.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
 _OBJS = $(YACCO).o $(FLEXO).o sea_str.o sea_scope.o sea_translator.o sea.o lexer.o
@@ -39,7 +39,8 @@ $(ODIR)/%.o: $(SDIR)/%.c $(DEPS)
 build:
 	@mkdir -p $(ODIR)
 	@lex -o $(SDIR)/$(FLEXO).c $(FLEXI)
-	@yacc --defines=$(IDIR)/$(YACCO).h -o $(SDIR)/$(YACCO).c $(YACCI)
+	@yacc --language=c++ --defines=$(IDIR)/$(YACCO).hpp -o $(SDIR)/$(YACCO).cpp $(YACCI)
+	@mv src/stack.hh include/stack.hh
 	@make compile
 
 compile: $(OBJS)

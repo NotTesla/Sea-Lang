@@ -2,6 +2,7 @@
 #include "sea.h"
 #include "sea_translator.h"
 #include "sea_scope.h"
+#include <string>
 
 #define EPSILON (sea_cstr(""))
 %}
@@ -13,6 +14,7 @@
 
 %union {
     struct SeaStr str;
+    std::string ing;
 }
 
 %token <str> IDENTIFIER QSTRING NUMBER
@@ -28,8 +30,9 @@
 %token SHL_EQ SHR_EQ AND_EQ XOR_EQ OR_EQ
 
 %type <str> type option_type include
-%type <str> return_stmt expression
-%type <str> func_call call_params _call_params
+%type <ing> return_stmt
+%type <str> expression
+%type <ing> func_call call_params _call_params
 %type <str> params _params param
 %type <str> func
 %type <str> block _statement statement
@@ -100,7 +103,7 @@ func
     {
         struct SeaStr decl = sea_fndecl($7.s, $2.s, $5.s);
         sea_forward_decl(&decl.s[1]);
-        $$ = decl;
+        $$ = std::string(decl.s);
     }
     ;
 
@@ -113,13 +116,13 @@ func_decl
     ;
 
 params
-    : param _params { $$ = sea_hstr($1.s, $2.s, NULL); }
-    |               { $$ = sea_cstr("void"); } 
+    : param _params { $$ = $1 + $2.s; }
+    |               { $$ = "void"; } 
     ;
 
 _params
-    : ',' param _params { $$ = sea_hstr(", ", $2.s, $3.s, NULL); }
-    |                   { $$ = EPSILON; }
+    : ',' param _params { $$ = ", " + $2 + $3); }
+    |                   { $$ = ""; }
     ;
 
 param
@@ -140,13 +143,13 @@ _statement
 statement
     : func_decl     { $$ = EPSILON; }
     | func_def      { $$ = EPSILON; }
-    | func_call ';' { $$ = $1; }
+    | func_call ';' { $$ = sea_hstr($1.s, ";", NULL); }
     | return_stmt   { $$ = $1; }
     | block         { $$ = $1; }
     ;
 
 func_call
-    : IDENTIFIER '(' call_params ')'    { $$ = sea_hstr(sea_getfndecl($1.s).s, "(", $3.s, ");", NULL); }
+    : IDENTIFIER '(' call_params ')'    { $$ = sea_hstr(sea_getfndecl($1.s).s, "(", $3.s, ")", NULL); }
     ;
 
 call_params
@@ -160,8 +163,8 @@ _call_params
     ;
 
 return_stmt
-    : RET ';'               { $$ = sea_cstr("return;"); }
-    | RET expression ';'    { $$ = sea_hstr("return ", $2.s, ";", NULL); }
+    : RET ';'           { $$ = "return;"; }
+    | RET expression ';'{ $$ = "return " + $2.s + ";" }
     ;
 
 expression

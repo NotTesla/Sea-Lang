@@ -1,15 +1,18 @@
 incl "stdio.h"
 
+// TODO: implement public methods as non-static
 pub def main fn() word = {
 
     def foo fn(msg cstr) u32 = {
+
+        // TODO: lambda captures
         def bar fn() = {}
 
         printf("%s\n", msg);
+        bar();
+
         ret 0;
     }
-
-    bar();
 
     ret foo("Hello World");
 }
